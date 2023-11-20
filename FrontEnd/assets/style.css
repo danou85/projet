@@ -291,3 +291,144 @@ div#worksContainer {
   color: #000; /* Couleur de l'icône */
   cursor: pointer;
 }
+
+
+
+#addPhotoModal {
+  display: none;
+}
+.backButton {
+  background: none;
+  border: none;
+  color: #333;
+  cursor: pointer;
+  font-size: 16px;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+}
+
+.backButton i {
+Width:21px;
+Height:18.01px;
+  margin-right: 5px; /* Ajoutez un espace entre l'icône et le texte si nécessaire */
+}
+.validateButton {
+width: 237px;
+height: 36px;
+border-radius: 60px;
+background-color:  #A7A7A7;
+;
+color: white;
+padding: 10px;
+border: none;
+border-radius: 5px;
+cursor: pointer;
+position: absolute;
+bottom: 20px;
+left: 50%;
+transform: translateX(-50%);
+}
+button.validateButton {
+  border-radius: 60px;
+}
+.custom-file-upload {
+  display: inline-block;
+  padding: 10px;
+  cursor: pointer;
+  background-color:  #CBD6DC;
+;
+  color: white;
+  border: none;
+  border-radius: 5px;
+}
+
+/* Masquez l'élément de téléchargement de fichier par défaut */
+#imageInput {
+  display: none;
+}
+
+/* Style du champ de texte pour le titre */
+
+#titleInput {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+  box-sizing: border-box;
+  display: flex;
+}
+.imageDisplay {
+margin-top: 30px;
+background: #E8F1F6;
+width: 400px;
+height: 170px;
+}
+
+/* Styles pour l'icône de l'image */
+.imageDisplay .custom-icon {
+
+margin-top: 10px;
+  font-size: 76px; /* Taille de la police pour l'icône */
+   color: #B9C5CC;
+ ;
+
+}
+
+/* Styles pour le bouton de téléchargement de fichier */
+.imageDisplay .custom-file-upload {
+  cursor: pointer;
+  width: 157px;
+  border-radius: 50px;
+color:#306685;
+
+}
+
+/* Styles pour la légende du titre */
+.imageDisplay p {
+  font-size: 16px; /* Taille de la police pour le titre */
+  color: #333; /* Couleur du texte pour le titre */
+  margin: 0; /* Supprimez les marges par défaut du paragraphe */
+}
+.imageDisplay p {
+margin-top: 20px;
+font-family: Work Sans;
+font-size: 10px;
+font-weight: 400;
+line-height: 12px;
+letter-spacing: 0em;
+text-align: center;
+
+}
+/* Ajoutez des styles supplémentaires selon vos besoins */
+input#titleInput {
+  width: 400px;
+  height: 51px;
+}
+select#categorySelect {
+width: 400px;
+  height: 51px;
+}
+label {
+  display: flex;
+font-family: Work Sans;
+font-size: 14px;
+font-weight: 600;
+line-height: 16px;
+letter-spacing: 0em;
+text-align: left;
+width: 65px;
+height: 16px;
+
+
+
+}
+.séparation {
+margin-top: 190px;
+width: 400px ;
+border: 1px solid #B3B3B3;
+}
+.séparation1 {
+margin-top: 100px;
+width: 400px ;
+border: 1px solid #B3B3B3;
+}

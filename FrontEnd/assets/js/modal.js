@@ -168,7 +168,6 @@ function validatePhoto() {
         imageDisplay.appendChild(captionElement);
     }
 
-    // Ajoutez ici d'autres actions à effectuer lors de la validation de la photo
 }
 
 

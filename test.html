@@ -1,121 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Modal Example</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-    }
-
-    .modal {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.5);
-      justify-content: center;
-      align-items: center;
-    }
-
-    .modal-content {
-      background-color: #fff;
-      padding: 20px;
-      border-radius: 5px;
-      text-align: center;
-    }
-
-    .close-btn {
-      cursor: pointer;
-      font-size: 20px;
-      font-weight: bold;
-      color: #333;
-    }
-
-    .project-image {
-      max-width: 100%;
-      max-height: 200px;
-      margin-bottom: 10px;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Afficher une Image depuis une Input File</title>
 </head>
 <body>
+    <h1>Sélectionner et Afficher une Image</h1>
+    
+    <!-- Input de type file pour la sélection d'une image -->
+    <input type="file" id="inputImage" accept="image/*" onchange="afficherImage(event)">
+    
+    <!-- Affichage de l'image sélectionnée -->
+    <img id="imageAffichee" src="#" alt="Image Sélectionnée" style="display: none; max-width: 100%;">
 
-<!-- Button to open the modal -->
-<button onclick="openModal()">Open Modal</button>
+    <script>
+        // Fonction pour afficher l'image sélectionnée
+        function afficherImage(event) {
+            var input = event.target;
+            var imageAffichee = document.getElementById('imageAffichee');
 
-<!-- The Modal -->
-<div id="myModal" class="modal">
-  <!-- Modal content -->
-  <div class="modal-content">
-    <span class="close-btn" onclick="closeModal()">&times;</span>
-    <h2>Projets</h2>
-    <div id="projectList"></div>
-  </div>
-</div>
+            // Vérifie si un fichier a été sélectionné
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
 
-<script>
-  // Function to open the modal
-  function openModal() {
-    const modal = document.getElementById('myModal');
-    modal.style.display = 'flex';
+                // Configure le callback lorsque la lecture du fichier est terminée
+                reader.onload = function (e) {
+                    // Affiche l'image
+                    imageAffichee.src = e.target.result;
+                    imageAffichee.style.display = 'block';
+                };
 
-    // Fetch projects from the API and populate the modal
-    fetch('http://localhost:5678/api/works')
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
+                // Lit le fichier en tant que Data URL
+                reader.readAsDataURL(input.files[0]);
+            }
         }
-        return response.json();
-      })
-      .then(data => {
-        populateProjectList(data);
-      })
-      .catch(error => {
-        console.error('Error fetching projects:', error);
-      });
-  }
-
-  // Function to close the modal
-  function closeModal() {
-    const modal = document.getElementById('myModal');
-    modal.style.display = 'none';
-  }
-
-  // Function to populate the project list in the modal
-  function populateProjectList(projects) {
-    const projectList = document.getElementById('projectList');
-    projectList.innerHTML = '';
-
-    projects.forEach(project => {
-      const projectDiv = document.createElement('div');
-
-      const projectImage = document.createElement('img');
-      projectImage.src = project.thumbnailUrl; // Utilisation de la propriété 'thumbnailUrl' pour les images
-      projectImage.alt = project.title;
-      projectImage.classList.add('project-image');
-
-      const projectTitle = document.createElement('p');
-      projectTitle.textContent = project.title;
-
-      projectDiv.appendChild(projectImage);
-      projectDiv.appendChild(projectTitle);
-
-      projectList.appendChild(projectDiv);
-    });
-  }
-
-  // Close the modal if the user clicks outside of it
-  window.onclick = function(event) {
-    const modal = document.getElementById('myModal');
-    if (event.target == modal) {
-      modal.style.display = 'none';
-    }
-  }
-</script>
-
+    </script>
 </body>
 </html>
+
+
+
+// Remplacez l'URL ci-dessous par l'URL de votre API pour l'ajout de photo
+const apiUrl = "http://localhost:5678/api/works";
+const token =  localStorage.getItem('token');
+// Faites une requête fetch pour envoyer le fichier à l'API
+fetch(apiUrl, {
+    method: "POST",
+    body: formData,
+    headers: {
+        'Authorization':'Bearer ' + token
+    }
+
+})

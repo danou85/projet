@@ -72,11 +72,13 @@
         <h3>Ajout photo</h3>
 
 		<div class="imageDisplay">
+			
 			<i class="fa-regular fa-image custom-icon"></i><br>
 			<!-- Ajoutez le bouton personnalisé et masquez l'élément input par défaut -->
 			<label for="imageInput" class="custom-file-upload">+ Ajouter une photo</label>
 			<input type="file" id="imageInput" accept="image/*" style="display:none;"><br>
 			<p>jpg, png : 4mo max</p>
+			<img id="photoPreview" src="" alt="Aperçu de la photo">
 		</div>
 		
 		<label for="titleInput">Titre :</label>
@@ -110,8 +112,6 @@
         <button class="validateButton" onclick="validatePhoto()">Valider</button>
 
         <span class="close" onclick="closeAddPhotoModal()">&times;</span>
-        <!-- Add your content for adding a photo here -->
-
     </div>
 </div>
 
@@ -119,17 +119,18 @@
 	<!-- ---------------------------------------------------------------------------------- -->
 	
 	<section id="portfolio">
-		<h2>Mes Projets 
-			<span class="modifier" id="openModal">
+		<h2>Mes Projets
+			<span class="modifier">
 				<i class="fa-regular fa-pen-to-square" style="color: #000000;"></i>
 				modifier
 			</span>
 		</h2>
-		<div class="category-list"></div>
-		<div class="gallery">
-			<div class="data-item"></div>
-			<div class="data-item"></div>
+		<div class="category-list" id="categoryList">
+		
 		</div>
+		
+		<div class="gallery"></div>
+	</section>
 	</section>
 	<section id="contact">
 		<h2>Contact</h2>

@@ -61,3 +61,44 @@ function isValidEmail(email) {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return emailRegex.test(email);
 }
+
+
+
+
+// Vérification côté client
+function verifierConnexion() {
+  // Effectuez une requête au serveur pour vérifier l'état de connexion
+  // Vous pouvez utiliser des cookies, des tokens JWT, etc. pour cela
+  // Exemple basique : utilisation de l'API Fetch pour une requête AJAX
+  fetch('/verifier_connexion', {
+      method: 'GET',
+      credentials: 'same-origin', // Pour inclure les cookies dans la requête
+  })
+  .then(response => {
+      if (response.status === 200) {
+          // L'utilisateur est connecté, permettez l'accès à la modalité
+          afficherModalModifier();
+      } else {
+          // L'utilisateur n'est pas connecté, affichez un message ou redirigez-le vers la page de connexion
+          afficherMessageConnexionRequise();
+      }
+  })
+  .catch(error => {
+      console.error('Erreur lors de la vérification de la connexion :', error);
+  });
+}
+
+// Fonction pour afficher la modalité de modification
+function afficherModalModifier() {
+  // Code pour afficher la modalité ici
+}
+
+// Fonction pour afficher un message indiquant la nécessité de se connecter
+function afficherMessageConnexionRequise() {
+  alert('Vous devez être connecté pour accéder à cette fonctionnalité.');
+  // Vous pouvez également rediriger l'utilisateur vers la page de connexion
+  // window.location.href = '/page_connexion';
+}
+
+// Appel de la fonction au chargement de la page ou lorsqu'on tente d'accéder à la modalité
+verifierConnexion();

@@ -199,15 +199,19 @@ footer nav ul {
 .category-item {
   margin: 5px;
   padding: 5px;
-  background-color: #1D6154;
-  color: #fff; /* Couleur de texte verte */
+  background-color: white ;
+  color: #1D6154; /* Couleur de texte verte */
   border-radius: 20px; /* Bordure arrondie */
   cursor: pointer;
   display: flex;
   align-items: center;
-  
-}
+  border: 1px solid #1D6154;
 
+}
+.category-item.selected {
+  background-color: #1D6154; /* Fond vert */
+  color: white; /* Texte blanc */
+}
 
 .modifier {
 	padding-left: 20px;

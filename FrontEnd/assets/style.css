@@ -240,8 +240,8 @@ footer nav ul {
 
 .modal-content {
   top: 30%;
-  width: 688px;
-  height: 630px;
+  width: 630px;
+  height: 688px;
   background: #fff;
   padding: 20px;
   border-radius: 5px;
@@ -435,4 +435,12 @@ border: 1px solid #B3B3B3;
 margin-top: 100px;
 width: 400px ;
 border: 1px solid #B3B3B3;
+}
+
+
+.mode-edition{
+  background-color: black;
+  color: white;
+  text-align: center;
+  padding: 10px;
 }

@@ -54,3 +54,25 @@ fetch(apiUrl, {
     }
 
 })
+
+
+
+<input type="file" id="inputFile" accept="image/*" onchange="afficherImage()">
+<img id="imagePreview" src="#" alt="Aperçu de l'image" style="display: none; max-width: 100%; max-height: 300px;">
+
+<script>
+    function afficherImage() {
+        var input = document.getElementById('inputFile');
+        var imagePreview = document.getElementById('imagePreview');
+
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                imagePreview.src = e.target.result;
+                imagePreview.style.display = 'block';
+            };
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }

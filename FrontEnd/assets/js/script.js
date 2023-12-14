@@ -1,3 +1,48 @@
+const boutonDeconnexion = document.getElementById("logout");
+const login = document.getElementById("login");
+const filtre = document.getElementById("categoryList");
+const modifier = document.getElementById("modifiertest")
+const modeEdition = document.getElementById("edition")
+
+if (estConnecte()) {
+  filtre.style.display = "none";
+  login.style.display = "none";
+  modifier.style.display = "";
+  modeEdition.style.display = "";
+  boutonDeconnexion.style.display = "";
+ 
+} else {
+  filtre.style.display = "";
+  login.style.display = "";
+  modifier.style.display = "none";
+  modeEdition.style.display = "none";
+  boutonDeconnexion.style.display = "none";
+ 
+}
+
+boutonDeconnexion.addEventListener("click", () => {
+  effectuerDeconnexion();
+});
+
+function effectuerDeconnexion() {
+  const token = localStorage.getItem("token");
+  if (token !== null) {
+    localStorage.removeItem("token");
+  }
+
+  filtre.style.display = "";
+  login.style.display = "";
+  modifier.style.display = "none";
+  boutonDeconnexion.style.display = "none";
+ 
+}
+
+function estConnecte() {
+  const token = localStorage.getItem("token");
+  return token !== null;
+}
+
+
 // Fonction pour récupérer et afficher les projets
 function fetchDataFromAPI(category) {
   const apiUrl = "http://localhost:5678/api/works";
@@ -171,4 +216,10 @@ function fetchDataFromAPI(category) {
     .catch((error) => {
       console.error("Erreur lors de la récupération des données :", error);
     });
+}
+
+function estConnecter() {
+  const token = localStorage.getItem("token");
+  console.log(token);
+  return token !== null;
 }

@@ -12,6 +12,11 @@
 	<script src="https://kit.fontawesome.com/4f12d184ac.js" crossorigin="anonymous"></script>
 </head>
 <body>
+	<div class="mode-edition" id="edition">
+			<i class="fa-regular fa-pen-to-square" style="color: #fff;"></i>
+			Mode edition 
+	</div>
+	
 <header>
 	<h1>Sophie Bluel <span>Architecte d'intérieur</span></h1>
 	<nav>
@@ -24,10 +29,15 @@
 				<a href="#"></a>
 				contact
 			</li>
-				<li>
+				<li id="login">
 					<a href="login.html">
 					login
 					</a>
+				</li>
+				<li id="logout">
+					
+					logout
+					
 				</li>
 			<li><img src="./assets/icons/instagram.png" alt="Instagram"></li>
 		</ul>
@@ -75,9 +85,9 @@
 			<i class="fa-regular fa-image custom-icon"></i><br>
 			<!-- Ajoutez le bouton personnalisé et masquez l'élément input par défaut -->
 			<label for="imageInput" class="custom-file-upload">+ Ajouter une photo</label>
-			<input type="file" id="imageInput" accept="image/*" style="display:none;"><br>
+			<input type="file" id="imageInput" accept="image/* " onchange="afficherImage()" style="display:none;"><br>
 			<p>jpg, png : 4mo max</p>
-			<img id="photoPreview" src="" alt="Aperçu de la photo">
+			<img id="photoPreview" src="#" alt="Aperçu de la photo">
 		</div>
 		
 		<label for="titleInput">Titre :</label>
@@ -119,7 +129,7 @@
 	
 	<section id="portfolio">
 		<h2>Mes Projets
-			<span class="modifier">
+			<span class="modifier" id="modifiertest">
 				<i class="fa-regular fa-pen-to-square" style="color: #000000;"></i>
 				modifier
 			</span>

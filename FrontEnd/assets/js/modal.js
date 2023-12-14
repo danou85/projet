@@ -235,3 +235,21 @@ function openAddPhotoModal() {
     modal.style.display = "none";
     addPhotoModal.style.display = "block";
 }
+
+
+
+function afficherImage() {
+    var input = document.getElementById('imageInput');
+    var imagePreview = document.getElementById('photoPreview');
+    console.log(afficherImage)
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+            imagePreview.src = e.target.result;
+            imagePreview.style.display = 'block';
+        };
+
+        reader.readAsDataURL(input.files[0]);
+    }
+}

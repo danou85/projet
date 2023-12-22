@@ -1,3 +1,5 @@
+// Declaration des variable dom 
+
 const modal = document.getElementById("myModal");
 const addPhotoModal = document.getElementById("addPhotoModal");
 const addPhotoBtn = document.getElementById("addPhotoBtn");
@@ -5,167 +7,131 @@ const closeAddPhotoBtn = document.querySelector(".modal-content.projet-modal-con
 const modifierSpan = document.querySelector(".modifier");
 const addPhotoForm = document.querySelector("#addPhotoModal form");
 const photoPreview = document.getElementById("photoPreview");
-let works = [];  // Ajout de la variable works pour stocker les projets
+let works = [];
 
-async function fetchWorks() {
-    const apiUrl = "http://localhost:5678/api/works";
-    const response = await fetch(apiUrl);
 
-    if (!response.ok) {
-        throw new Error("Erreur lors de la récupération des projets.");
-    }
+// ouverture et fermeture modal 
 
-    return response.json();
+// Fonction pour ouvrir la modal
+function ouvrirModal() {
+    // Ouvrir la modal
+    const modal = document.getElementById("myModal");
+    modal.style.display = "block";
 }
 
-function createWorkElement(work) {
-    const workElement = document.createElement("div");
-    workElement.innerHTML = `
+// Gestionnaire d'événement pour le clic sur le bouton "Modifier"
+document.getElementById("modifiertest").addEventListener("click", function() {
+    console.log("Clic sur l'élément modifiertest");
+    ouvrirModal();
+});
+
+
+
+// Fonction pour afficher les projets dans la modal
+function afficherProjetsDansModal() {
+    const apiUrl = "http://localhost:5678/api/works"; // URL de l' API 
+    const worksContainer = document.getElementById("worksContainer");
+
+    // Utilisation de fetch pour récupérer les projets depuis l'API
+    fetch(apiUrl)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Erreur lors de la récupération des projets depuis l'API.");
+            }
+            return response.json();
+        })
+        .then(projects => {
+            // Effacement du contenu actuel de worksContainer
+            worksContainer.innerHTML = "";
+
+            // Affichage des projets dans la modal
+            projects.forEach(project => {
+                const projectElement = createProjectElement(project);
+                worksContainer.appendChild(projectElement);
+            });
+
+            // Ouvrir la modal après avoir récupéré et affiché les projets
+            ouvrirModal();
+        })
+        .catch(error => {
+            console.error("Erreur lors de la récupération et de l'affichage des projets :", error);
+        });
+}
+
+// Fonction pour créer un élément de projet dans le DOM
+function createProjectElement(project) {
+    const projectElement = document.createElement("div");
+    projectElement.innerHTML = `
         <div style="display: flex; justify-content: flex-end;">
-            <img src="${work.imageUrl}" alt="${work.title}" style="width: 78.12px; height: 104.08px;">
+            <img src="${project.imageUrl}" alt="${project.title}" style="width: 78.12px; height: 104.08px;">
             <div class="delete-icon" style="margin-left: -15px; z-index:999">
                 <i class="fas fa-trash"></i>
             </div>
         </div>
     `;
 
-    workElement.dataset.id = work.id;
-    workElement.querySelector(".delete-icon").addEventListener("click", () => deleteProject(work.id));
+    projectElement.dataset.id = project.id;
+    projectElement.querySelector(".delete-icon").addEventListener("click", () => deleteProject(project.id));
 
-    return workElement;
+    return projectElement;
 }
 
-async function displayWorks() {
-    const worksContainer = document.getElementById("worksContainer");
-
-    try {
-        const works = await fetchWorks();
-        worksContainer.innerHTML = "";
-        works.forEach((work) => {
-            const workElement = createWorkElement(work);
-            worksContainer.appendChild(workElement);
-        });
-    } catch (error) {
-        console.error("Erreur lors de l'affichage des œuvres :", error);
-    }
-}
-
-async function deleteProject(itemId) {
-    try {
-        const response = await fetch(`http://localhost:5678/api/works/${itemId}`, {
-            method: "DELETE",
-            headers: {
-                Authorization: `Bearer ${localStorage.token}`,
-            },
-        });
+// Fonction pour supprimer un projet
+function deleteProject(projectId) {
+    fetch(`http://localhost:5678/api/works/${projectId}`, {
+        method: "DELETE",
+        headers: {
+            Authorization: `Bearer ${localStorage.token}`,
+        },
+    })
+    .then(response => {
         if (response.status === 204) {
             console.log("Succès : Le projet a été supprimé.");
-            works = works.filter((work) => work.id !== itemId);
-            displayWorks();
-            chargerProjets();
+            // Vous pouvez ajouter ici la logique pour mettre à jour l'affichage des projets dans la modal
+            afficherProjetsDansModal();  // Mettez à jour l'affichage après la suppression
         } else {
             console.error("Erreur : Échec de la suppression du projet.");
         }
-    } catch (error) {
+    })
+    .catch(error => {
         console.error("Erreur :", error);
-    }
-}
-
-function openModal() {
-    modal.style.display = "block";
-    displayWorks();
-}
-
-function closeModals() {
-    modal.style.display = "none";
-    addPhotoModal.style.display = "none";
-}
-
-if (modifierSpan) {
-    modifierSpan.addEventListener("click", openModal);
-}
-
-window.addEventListener("click", (event) => {
-    if (event.target === modal) {
-        closeModal();
-    }
-});
-
-if (addPhotoBtn) {
-    addPhotoBtn.addEventListener("click", openAddPhotoModal);
-}
-
-if (closeAddPhotoBtn) {
-    closeAddPhotoBtn.addEventListener("click", closeAddPhotoModal);
-}
-
-if (addPhotoForm) {
-    addPhotoForm.addEventListener("submit", async (event) => {
-        event.preventDefault();
-
-        if (validatePhoto()) {
-            try {
-                const formData = new FormData();
-                const title = document.getElementById("titleInput").value;
-                const category = document.getElementById("categorySelect").value;
-                formData.append("title", title);
-                formData.append("category", category);
-                const fileInput = document.getElementById("imageInput");
-                const photoFile = fileInput.files[0];
-                formData.append("photo", photoFile);
-
-                const apiUrl = "http://localhost:5678/api/works";
-                const token = localStorage.getItem("token");
-
-                console.log("Envoi de la requête à l'API...");
-
-                const response = await fetch(apiUrl, {
-                    method: "POST",
-                    body: formData,
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                });
-
-                console.log("Réponse de l'API :", response);
-
-                if (!response.ok) {
-                    console.error("Erreur lors de l'ajout de la photo.", response.status, response.statusText);
-
-                    try {
-                        const responseBody = await response.json();
-                        console.error("Contenu de la réponse d'erreur :", responseBody);
-                    } catch (jsonError) {
-                        console.error("Erreur lors de la lecture du contenu JSON de la réponse d'erreur :", jsonError);
-                    }
-
-                    throw new Error("Erreur lors de l'ajout de la photo.");
-                }
-
-                const data = await response.json();
-                console.log("Photo ajoutée avec succès :", data);
-
-                closeAddPhotoModal();
-                refreshHomePage();
-            } catch (error) {
-                console.error("Erreur lors de l'ajout de la photo :", error);
-            }
-        } else {
-            console.error("La photo n'est pas valide.");
-        }
     });
 }
 
-async function validatePhoto() {
-    console.log("Validation de la photo...");
 
+
+
+function afficherImage() {
+    const input = document.getElementById('imageInput');
+    const imagePreview = document.getElementById('photoPreview');
+
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+
+        reader.onload = function (e) {
+            imagePreview.src = e.target.result;
+            imagePreview.style.display = 'block';
+        };
+
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
+// Fonction pour fermer la modal d'ajout de photo
+function closeAddPhotoModal() {
+    const addPhotoModal = document.getElementById("addPhotoModal");
+    addPhotoModal.style.display = "none";
+}
+
+// Fonction pour valider une photo avant de l'envoyer à l'API
+function validatePhoto() {
     const titleInput = document.getElementById("titleInput");
     const categorySelect = document.getElementById("categorySelect");
     const fileInput = document.getElementById("imageInput");
 
     if (!titleInput || !categorySelect || !fileInput || fileInput.files.length === 0) {
         console.log("Échec de la validation : un champ du formulaire est indéfini ou vide.");
-        return false;
+        return;
     }
 
     const title = titleInput.value;
@@ -180,76 +146,91 @@ async function validatePhoto() {
 
     if (!allowedImageTypes.includes(photoFile.type)) {
         console.log("Échec de la validation : le fichier n'est pas une image valide.");
-        return false;
+        return;
     }
 
-    try {
-        const formData = new FormData();
-        formData.append("title", title);
-        formData.append("category", category);
-        formData.append("image", photoFile);
+    const formData = new FormData();
+    formData.append("title", title);
+    formData.append("category", category);
+    formData.append("image", photoFile);
 
-        const authToken = localStorage.getItem("token");  // Récupération du token depuis le stockage local
-        const apiUrl = "http://localhost:5678/api/works";
+    const authToken = localStorage.getItem("token");
+    const apiUrl = "http://localhost:5678/api/works";
 
-        console.log("Envoi de la requête à l'API...");
+    console.log("Envoi de la requête à l'API...");
 
-        const response = await fetch(apiUrl, {
-            method: "POST",
-            body: formData,
-            headers: {
-                Authorization: `Bearer ${authToken}`,
-            },
-        });
-
-        console.log("Réponse de l'API :", response);
-
+    fetch(apiUrl, {
+        method: "POST",
+        body: formData,
+        headers: {
+            Authorization: `Bearer ${authToken}`,
+        },
+    })
+    .then(response => {
         if (response.ok) {
-            const data = await response.json();
-            console.log("Photo ajoutée avec succès :", data);
-            return true;
+            console.log("Photo ajoutée avec succès.");
+            // Fermer la modal après avoir ajouté la photo
+            closeAddPhotoModal();
         } else {
             console.error("Erreur lors de l'ajout de la photo. Statut de la réponse :", response.status);
-            return false;
         }
-    } catch (error) {
+    })
+    .catch(error => {
         console.error("Erreur lors de la requête POST :", error);
-        return false;
-    }
+    });
 }
 
-function displayPhotoPreview(file) {
-    const reader = new FileReader();
 
-    reader.onload = function (e) {
-        photoPreview.src = e.target.result;
-    };
 
-    reader.readAsDataURL(file);
-}
 
-function refreshHomePage() {
-    displayWorks();
-}
-function openAddPhotoModal() {
+
+
+
+
+
+
+
+// Appeler la fonction au chargement de la page si nécessaire
+document.addEventListener("DOMContentLoaded", function() {
+    // Ajoutez cette ligne si vous voulez que la modal s'ouvre automatiquement avec les projets
+    // afficherProjetsDansModal();
+});
+
+// Gestionnaire d'événement pour le clic sur le bouton "Modifier"
+document.getElementById("modifiertest").addEventListener("click", function() {
+    console.log("Clic sur l'élément modifiertest");
+    afficherProjetsDansModal();
+});
+
+
+
+
+// Fonction pour fermer la modal
+function fermerModal() {
+    const modal = document.getElementById("myModal");
     modal.style.display = "none";
+}
+
+// Gestionnaire d'événement pour le clic sur la croix
+document.querySelector(".modal-content .close").addEventListener("click", fermerModal);
+
+
+
+
+// ouverture de la deuxieme modal au click du bouton 
+
+
+// Fonction pour ouvrir la modal d'ajout de photo
+function ouvrirAddPhotoModal() {
+    const addPhotoModal = document.getElementById("addPhotoModal");
     addPhotoModal.style.display = "block";
 }
 
-
-
-function afficherImage() {
-    var input = document.getElementById('imageInput');
-    var imagePreview = document.getElementById('photoPreview');
-    console.log(afficherImage)
-    if (input.files && input.files[0]) {
-        var reader = new FileReader();
-
-        reader.onload = function (e) {
-            imagePreview.src = e.target.result;
-            imagePreview.style.display = 'block';
-        };
-
-        reader.readAsDataURL(input.files[0]);
-    }
+// Fonction pour fermer la modal d'ajout de photo
+function fermerAddPhotoModal() {
+    const addPhotoModal = document.getElementById("addPhotoModal");
+    addPhotoModal.style.display = "none";
 }
+
+// Gestionnaire d'événement pour le clic sur le bouton "Ajouter une photo"
+document.getElementById("addPhotoBtn").addEventListener("click", ouvrirAddPhotoModal);

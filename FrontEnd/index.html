@@ -58,17 +58,30 @@
 	<!-- ---------------------------------------------------------------------------------- -->
 
 
-	<div class="modal" id="myModal">
+	<!--<div class="modal" id="myModal">
 
 		<div class="modal-content projet-modal-content">
 			<h3>Galerie photos</h3>
 			<div id="worksContainer"></div>
 			<div class="séparation1"></div>
-			<button id="addPhotoBtn" onclick="openAddPhotoModal()">Ajouter une photo</button>
-			<span class="close" onclick="closeAddPhotoModal()">&times;</span>
+			<button id="addPhotoBtn">Ajouter une photo</button>
+			<span class="close">&times;</span>
+		</div>
+	</div>-->
+   
+    <!---------------------------------------------------------------------------->
+
+    <div class="modal" id="myModal">
+
+		<div class="modal-content projet-modal-content">
+			<h3>Galerie photos</h3>
+			<div id="worksContainer"></div>
+			<div class="séparation1"></div>
+			<button id="addPhotoBtn">Ajouter une photo</button>
+			<span class="close">&times;</span>
 		</div>
 	</div>
-   
+     
 
     <!----------------------------------test modal ajout photo---------------------------------------------------->
 <!-- New modal for adding a photo -->
@@ -85,9 +98,10 @@
 			<i class="fa-regular fa-image custom-icon"></i><br>
 			<!-- Ajoutez le bouton personnalisé et masquez l'élément input par défaut -->
 			<label for="imageInput" class="custom-file-upload">+ Ajouter une photo</label>
-			<input type="file" id="imageInput" accept="image/* " onchange="afficherImage()" style="display:none;"><br>
-			<p>jpg, png : 4mo max</p>
-			<img id="photoPreview" src="#" alt="Aperçu de la photo">
+            <input type="file" id="imageInput" accept="image/*" style="display:none;" onchange="afficherImage()"><br>
+            <p>jpg, png : 4mo max</p>
+            <img id="photoPreview" style="display: none;">
+
 		</div>
 		
 		<label for="titleInput">Titre :</label>

@@ -183,7 +183,7 @@ footer nav ul {
 }
 
 
-
+/* Categorie */
 
 .category-list {
   background-color: #fff;
@@ -213,6 +213,9 @@ footer nav ul {
   color: white; /* Texte blanc */
 }
 
+
+
+/* MODIFIER */
 .modifier {
 	padding-left: 20px;
 	font-family: Work Sans;
@@ -224,6 +227,11 @@ footer nav ul {
 	/* display: none; */
 
 }
+
+
+
+/* MODAL */
+
 .modal {
   display: none;
   position: fixed;
@@ -240,8 +248,8 @@ footer nav ul {
 
 .modal-content {
   top: 30%;
-  width: 630px;
-  height: 688px;
+  width: 630px !important;
+  height: 688px !important;
   background: #fff;
   padding: 20px;
   border-radius: 5px;
@@ -294,6 +302,16 @@ div#worksContainer {
   font-size: 17px;
   color: #000; /* Couleur de l'icône */
   cursor: pointer;
+}
+
+
+#photoPreview{
+    position: absolute;
+    width: 150px;
+    height: 150px;
+    top: 85px;
+    left: 145px;
+    
 }
 
 
@@ -437,6 +455,8 @@ width: 400px ;
 border: 1px solid #B3B3B3;
 }
 
+
+/* MODE EDITION */
 
 .mode-edition{
   background-color: black;

@@ -65,7 +65,7 @@ function isValidEmail(email) {
 
 
 
-// Vérification côté client
+/**  Vérification côté client
 function verifierConnexion() {
   // Effectuez une requête au serveur pour vérifier l'état de connexion
   // Vous pouvez utiliser des cookies, des tokens JWT, etc. pour cela
@@ -86,12 +86,9 @@ function verifierConnexion() {
   .catch(error => {
       console.error('Erreur lors de la vérification de la connexion :', error);
   });
-}
+} 
 
-// Fonction pour afficher la modalité de modification
-function afficherModalModifier() {
-  // Code pour afficher la modalité ici
-}
+
 
 // Fonction pour afficher un message indiquant la nécessité de se connecter
 function afficherMessageConnexionRequise() {
@@ -102,3 +99,4 @@ function afficherMessageConnexionRequise() {
 
 // Appel de la fonction au chargement de la page ou lorsqu'on tente d'accéder à la modalité
 verifierConnexion();
+*/

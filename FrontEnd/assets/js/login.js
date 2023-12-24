@@ -1,13 +1,17 @@
+// Sélectionnez le formulaire et les champs d'entrée
 const form = document.querySelector('form');
 const emailInput = document.getElementById('email');
 const passwordInput = document.getElementById('password');
 
+// Ajoutez un écouteur d'événements pour la soumission du formulaire
 form.addEventListener('submit', function (event) {
-  event.preventDefault();
+  event.preventDefault(); // Empêche le comportement par défaut du formulaire
 
+  // Récupérez les valeurs des champs email et password
   const email = emailInput.value;
   const password = passwordInput.value;
 
+  // Vérifiez si les champs sont vides
   if (!email || !password) {
     alert('Veuillez remplir tous les champs.');
     return;
@@ -19,6 +23,7 @@ form.addEventListener('submit', function (event) {
     return;
   }
 
+  // Effectuez une requête POST pour l'authentification
   fetch('http://localhost:5678/api/users/login', {
     method: 'POST',
     headers: {
@@ -34,6 +39,7 @@ form.addEventListener('submit', function (event) {
     .then(data => {
       console.log(data);
 
+      // Gérez la réponse du serveur après l'authentification
       if (data.token) {
         // Authentification réussie : rediriger l'utilisateur vers la page d'accueil
         window.location.href = 'index.html';
@@ -50,53 +56,17 @@ form.addEventListener('submit', function (event) {
     });
 });
 
+// Sélectionnez le lien "Mot de passe oublié" et ajoutez un écouteur d'événements
 const forgotPasswordLink = document.querySelector('.mp-forget');
 forgotPasswordLink.addEventListener('click', function (event) {
   event.preventDefault();
   alert('Lien de réinitialisation du mot de passe envoyé par e-mail.');
 });
 
+// Fonction pour valider une adresse e-mail
 function isValidEmail(email) {
   // Validation d'email simple (vous pouvez utiliser une expression régulière plus avancée)
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return emailRegex.test(email);
 }
 
-
-
-
-/**  Vérification côté client
-function verifierConnexion() {
-  // Effectuez une requête au serveur pour vérifier l'état de connexion
-  // Vous pouvez utiliser des cookies, des tokens JWT, etc. pour cela
-  // Exemple basique : utilisation de l'API Fetch pour une requête AJAX
-  fetch('/verifier_connexion', {
-      method: 'GET',
-      credentials: 'same-origin', // Pour inclure les cookies dans la requête
-  })
-  .then(response => {
-      if (response.status === 200) {
-          // L'utilisateur est connecté, permettez l'accès à la modalité
-          afficherModalModifier();
-      } else {
-          // L'utilisateur n'est pas connecté, affichez un message ou redirigez-le vers la page de connexion
-          afficherMessageConnexionRequise();
-      }
-  })
-  .catch(error => {
-      console.error('Erreur lors de la vérification de la connexion :', error);
-  });
-} 
-
-
-
-// Fonction pour afficher un message indiquant la nécessité de se connecter
-function afficherMessageConnexionRequise() {
-  alert('Vous devez être connecté pour accéder à cette fonctionnalité.');
-  // Vous pouvez également rediriger l'utilisateur vers la page de connexion
-  // window.location.href = '/page_connexion';
-}
-
-// Appel de la fonction au chargement de la page ou lorsqu'on tente d'accéder à la modalité
-verifierConnexion();
-*/

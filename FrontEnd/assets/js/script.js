@@ -1,49 +1,53 @@
+// Récupération des éléments du DOM
 const boutonDeconnexion = document.getElementById("logout");
 const login = document.getElementById("login");
 const filtre = document.getElementById("categoryList");
 const modifier = document.getElementById("modifiertest")
 const modeEdition = document.getElementById("edition")
 
+// Vérifier si l'utilisateur est connecté
 if (estConnecte()) {
+  // Masquer les éléments liés à la connexion
   filtre.style.display = "none";
   login.style.display = "none";
   modifier.style.display = "";
   modeEdition.style.display = "";
   boutonDeconnexion.style.display = "";
- 
 } else {
+  // Masquer les éléments liés à la déconnexion
   filtre.style.display = "";
   login.style.display = "";
   modifier.style.display = "none";
   modeEdition.style.display = "none";
   boutonDeconnexion.style.display = "none";
- 
 }
 
+// Ajouter un gestionnaire d'événements au bouton de déconnexion
 boutonDeconnexion.addEventListener("click", () => {
   effectuerDeconnexion();
 });
 
+// Fonction pour effectuer la déconnexion
 function effectuerDeconnexion() {
   const token = localStorage.getItem("token");
   if (token !== null) {
     localStorage.removeItem("token");
   }
 
+  // Rétablir l'affichage par défaut après la déconnexion
   filtre.style.display = "";
   login.style.display = "";
   modifier.style.display = "none";
   boutonDeconnexion.style.display = "none";
- 
 }
 
+// Fonction pour vérifier si l'utilisateur est connecté
 function estConnecte() {
   const token = localStorage.getItem("token");
   return token !== null;
 }
 
-
-// Fonction pour récupérer et afficher les projets
+// Fonction pour récupérer et afficher les projets depuis une API
 function fetchDataFromAPI(category) {
   const apiUrl = "http://localhost:5678/api/works";
   fetch(apiUrl)
@@ -56,13 +60,10 @@ function fetchDataFromAPI(category) {
 
       // Filtrer les projets par catégorie si la catégorie est fournie
       const filteredData = category
-        ? data.filter((item) => {
-            console.log(item);
-            console.log(item.categoryId === category.id);
-            return item.categoryId === category.id;
-          })
+        ? data.filter((item) => item.categoryId === category.id)
         : data;
 
+      // Afficher les projets dans la galerie
       gallery.innerHTML = filteredData
         .map(
           (item) => `
@@ -79,7 +80,7 @@ function fetchDataFromAPI(category) {
     });
 }
 
-// Fonction pour récupérer et afficher les catégories
+// Fonction pour récupérer et afficher les catégories depuis une API
 function fetchCategoriesFromAPI() {
   categoryList.innerHTML = "";
   const categoryItem = document.createElement("div");
@@ -135,6 +136,7 @@ document.addEventListener("DOMContentLoaded", () => {
   fetchDataFromAPI(); // Afficher tous les projets initialement
 });
 
+// Données d'exemple pour les projets
 const elements = [
   { nom: "Projet 1", categorie: 1 },
   { nom: "Projet 2", categorie: 2 },
@@ -185,7 +187,7 @@ document.querySelectorAll(".category-item").forEach((button) => {
   });
 });
 
-// Fonction pour récupérer et afficher les projets
+// Fonction pour récupérer et afficher les projets depuis une API
 function fetchDataFromAPI(category) {
   const apiUrl = "http://localhost:5678/api/works";
   fetch(apiUrl)
@@ -202,6 +204,7 @@ function fetchDataFromAPI(category) {
           ? data.filter((item) => item.categoryId === category.id)
           : data;
 
+      // Afficher les projets dans la galerie
       gallery.innerHTML = filteredData
         .map(
           (item) => `
@@ -218,6 +221,7 @@ function fetchDataFromAPI(category) {
     });
 }
 
+// Fonction pour vérifier si l'utilisateur est connecté
 function estConnecter() {
   const token = localStorage.getItem("token");
   console.log(token);

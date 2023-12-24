@@ -234,3 +234,12 @@ function fermerAddPhotoModal() {
 
 // Gestionnaire d'événement pour le clic sur le bouton "Ajouter une photo"
 document.getElementById("addPhotoBtn").addEventListener("click", ouvrirAddPhotoModal);
+
+
+
+// Fonction pour revenir en arrière dans l'application
+function goBack() {
+    // Fermer la modal d'ajout de photo
+    fermerAddPhotoModal();
+}
+

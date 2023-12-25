@@ -185,6 +185,19 @@ footer nav ul {
 
 /* Categorie */
 
+.tous {
+	margin: 5px;
+	padding: 5px;
+	background-color: white;
+	border: 1px solid #1D6154;
+	border-radius: 20px;
+	color: #1D6154; /* Couleur de texte verte /
+	border-radius: 20px; / Bordure arrondie */
+	cursor: pointer;
+	display: flex;
+	align-items: center; 
+}
+
 .category-list {
   background-color: #fff;
   padding: 10px;

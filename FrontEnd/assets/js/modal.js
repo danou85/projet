@@ -100,22 +100,31 @@ function deleteProject(projectId) {
 
 
 
-
+// Fonction pour afficher l'image sélectionnée par l'utilisateur
 function afficherImage() {
+    // Sélectionner l'élément d'entrée de fichier et l'aperçu de l'image
     const input = document.getElementById('imageInput');
     const imagePreview = document.getElementById('photoPreview');
 
+    // Vérifier si un fichier a été sélectionné
     if (input.files && input.files[0]) {
+        // Créer un objet FileReader pour lire le contenu du fichier
         const reader = new FileReader();
 
+        // Définir une fonction de rappel à exécuter lorsque la lecture est terminée
         reader.onload = function (e) {
+            // Mettre à jour la source de l'aperçu de l'image avec les données du fichier
             imagePreview.src = e.target.result;
+            
+            // Afficher l'aperçu de l'image
             imagePreview.style.display = 'block';
         };
 
+        // Lire le contenu du fichier sous forme d'URL data: URL
         reader.readAsDataURL(input.files[0]);
     }
 }
+
 
 // Fonction pour fermer la modal d'ajout de photo
 function closeAddPhotoModal() {
@@ -123,42 +132,49 @@ function closeAddPhotoModal() {
     addPhotoModal.style.display = "none";
 }
 
-// Fonction pour valider une photo avant de l'envoyer à l'API
+// Fonction pour valider et envoyer les données du formulaire de téléchargement d'une photo à l'API
 function validatePhoto() {
+    // Sélectionner les éléments du formulaire
     const titleInput = document.getElementById("titleInput");
     const categorySelect = document.getElementById("categorySelect");
     const fileInput = document.getElementById("imageInput");
 
+    // Vérifier si tous les champs nécessaires sont définis et non vides
     if (!titleInput || !categorySelect || !fileInput || fileInput.files.length === 0) {
         console.log("Échec de la validation : un champ du formulaire est indéfini ou vide.");
         return;
     }
 
+    // Récupérer les valeurs des champs du formulaire
     const title = titleInput.value;
     const category = categorySelect.value;
     const photoFile = fileInput.files[0];
 
-    console.log("Titre :", title);
-    console.log("Catégorie :", category);
-    console.log("Fichier :", photoFile);
-
+    // Définir les types d'images autorisés
     const allowedImageTypes = ["image/jpeg", "image/png", "image/gif"];
 
+    // Vérifier si le type de fichier est autorisé
     if (!allowedImageTypes.includes(photoFile.type)) {
         console.log("Échec de la validation : le fichier n'est pas une image valide.");
         return;
     }
 
+    // Créer un objet FormData pour envoyer les données du formulaire sous forme de formulaire multipart
     const formData = new FormData();
     formData.append("title", title);
     formData.append("category", category);
     formData.append("image", photoFile);
 
+    // Récupérer le jeton d'authentification depuis le stockage local
     const authToken = localStorage.getItem("token");
+
+    // Définir l'URL de l'API
     const apiUrl = "http://localhost:5678/api/works";
 
+    // Afficher un message indiquant l'envoi de la requête à l'API
     console.log("Envoi de la requête à l'API...");
 
+    // Envoyer la requête POST à l'API avec les données du formulaire
     fetch(apiUrl, {
         method: "POST",
         body: formData,
@@ -167,18 +183,22 @@ function validatePhoto() {
         },
     })
     .then(response => {
+        // Vérifier si la requête a réussi
         if (response.ok) {
             console.log("Photo ajoutée avec succès.");
             // Fermer la modal après avoir ajouté la photo
             closeAddPhotoModal();
         } else {
+            // Afficher une erreur en cas d'échec de la requête
             console.error("Erreur lors de l'ajout de la photo. Statut de la réponse :", response.status);
         }
     })
     .catch(error => {
+        // Afficher une erreur en cas d'échec de la requête POST
         console.error("Erreur lors de la requête POST :", error);
     });
 }
+
 
 
 

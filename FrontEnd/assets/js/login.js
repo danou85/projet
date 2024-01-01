@@ -63,10 +63,5 @@ forgotPasswordLink.addEventListener('click', function (event) {
   alert('Lien de réinitialisation du mot de passe envoyé par e-mail.');
 });
 
-// Fonction pour valider une adresse e-mail
-function isValidEmail(email) {
-  // Validation d'email simple (vous pouvez utiliser une expression régulière plus avancée)
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return emailRegex.test(email);
-}
+
 

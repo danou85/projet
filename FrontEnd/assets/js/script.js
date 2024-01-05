@@ -31,25 +31,35 @@ document.addEventListener('DOMContentLoaded', () => {
       });
   }
 
-  // Fonction pour afficher les projets dans la galerie
-  function displayProjects(data) {
+ // Fonction pour afficher les projets dans la galerie
+function displayProjects(data) {
+    // Mettre à jour le contenu HTML de la galerie en utilisant les données fournies
     gallery.innerHTML = data
+      // Mapper chaque élément de données pour créer un élément visuel
       .map(item => `
         <div class="data-item">
+          <!-- Afficher l'image du projet avec l'URL fournie dans les données -->
           <img src="${item.imageUrl}" alt="${item.image}">
+          <!-- Afficher le titre du projet avec le titre fourni dans les données -->
           <p>${item.title}</p>
         </div>
       `)
+      // Joindre tous les éléments visuels en une seule chaîne de caractères
       .join('');
-  }
+}
 
-  // Fonction pour récupérer et afficher les catégories depuis une API
-  function fetchCategoriesFromAPI() {
+// Fonction pour récupérer les catégories depuis une API
+function fetchCategoriesFromAPI() {
+    // Définir l'URL de l'API des catégories
     const apiUrl = 'http://localhost:5678/api/categories';
 
+    // Effectuer une requête fetch pour obtenir les catégories depuis l'API
     fetch(apiUrl)
       .then(response => {
+        // Vérifier si la réponse est réussie, sinon rejeter une erreur
         if (!response.ok) throw new Error('La requête a échoué');
+        
+        // Convertir la réponse en format JSON
         return response.json();
       })
       .then(data => {
@@ -58,56 +68,72 @@ document.addEventListener('DOMContentLoaded', () => {
         tousCategoryItem.classList.add('category-item', 'selected');
         tousCategoryItem.textContent = 'Tous';
 
-        // Ajouter un écouteur pour afficher tous les projets si "Tous" est sélectionné
+        // Ajouter un écouteur d'événements pour afficher tous les projets si "Tous" est sélectionné
         tousCategoryItem.addEventListener('click', () => {
+          // Retirer la classe 'selected' de tous les éléments de catégorie
           const categoryItems = document.querySelectorAll('.category-item');
           categoryItems.forEach(item => {
             item.classList.remove('selected');
           });
 
+          // Ajouter la classe 'selected' à l'élément "Tous"
           tousCategoryItem.classList.add('selected');
-          fetchDataFromAPI(); // Afficher tous les projets si "Tous" est sélectionné
+
+          // Appeler la fonction fetchDataFromAPI pour afficher tous les projets
+          fetchDataFromAPI();
         });
 
+        // Ajouter l'élément "Tous" à la liste des catégories dans l'interface utilisateur
         categoryList.appendChild(tousCategoryItem);
 
-        // Afficher les autres catégories
+        // Afficher les autres catégories en utilisant la fonction displayCategories
         displayCategories(data);
 
-        // Sélectionner la catégorie "Tous" par défaut
+        // Sélectionner la catégorie "Tous" par défaut en simulant un clic sur l'élément "Tous"
         tousCategoryItem.click();
       })
       .catch(error => {
+        // Afficher une erreur dans la console en cas d'échec de la récupération des catégories
         console.error('Erreur lors de la récupération des catégories :', error);
       });
   }
 
-  // Fonction pour afficher les catégories
-  function displayCategories(categories) {
-    categories.forEach(category => {
-      const categoryItem = document.createElement('div');
-      categoryItem.classList.add('category-item');
-      categoryItem.textContent = category.name;
 
-      // Ajouter un écouteur d'événements pour filtrer par catégorie lors du clic
-      categoryItem.addEventListener('click', () => {
-        // Retirer la classe 'selected' de tous les éléments de catégorie
-        const categoryItems = document.querySelectorAll('.category-item');
-        categoryItems.forEach(item => {
-          item.classList.remove('selected');
+  // Fonction pour afficher les catégories dans l'interface utilisateur
+function displayCategories(categories) {
+    // Parcourir toutes les catégories fournies en paramètre
+    categories.forEach(category => {
+        // Créer un nouvel élément div pour représenter une catégorie
+        const categoryItem = document.createElement('div');
+
+        // Ajouter la classe 'category-item' à l'élément div créé
+        categoryItem.classList.add('category-item');
+
+        // Définir le texte de l'élément div avec le nom de la catégorie
+        categoryItem.textContent = category.name;
+
+        // Ajouter un écouteur d'événements pour le clic sur la catégorie
+        categoryItem.addEventListener('click', () => {
+            // Retirer la classe 'selected' de tous les éléments de catégorie
+            const categoryItems = document.querySelectorAll('.category-item');
+            categoryItems.forEach(item => {
+                item.classList.remove('selected');
+            });
+
+            // Ajouter la classe 'selected' à l'élément de catégorie actuel
+            categoryItem.classList.add('selected');
+
+            // Récupérer l'identifiant de la catégorie sélectionnée
+            const categoryId = category.id;
+
+            // Appeler la fonction fetchDataFromAPI avec l'identifiant de la catégorie sélectionnée
+            fetchDataFromAPI(categoryId);
         });
 
-        // Ajouter la classe 'selected' à l'élément de catégorie actuel
-        categoryItem.classList.add('selected');
-
-        // Appeler la fonction fetchDataFromAPI avec la catégorie sélectionnée
-        const categoryId = category.id;
-        fetchDataFromAPI(categoryId);
-      });
-
-      categoryList.appendChild(categoryItem);
+        // Ajouter l'élément de catégorie à la liste des catégories dans l'interface utilisateur
+        categoryList.appendChild(categoryItem);
     });
-  }
+}
 
   // Exécuter ces fonctions lorsque le contenu DOM est chargé
   fetchCategoriesFromAPI();

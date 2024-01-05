@@ -55,7 +55,11 @@ form.addEventListener('submit', function (event) {
       alert('Une erreur est survenue lors de l\'authentification.');
     });
 });
-
+// Fonction de validation d'email
+function isValidEmail(email) {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+}
 // Sélectionnez le lien "Mot de passe oublié" et ajoutez un écouteur d'événements
 const forgotPasswordLink = document.querySelector('.mp-forget');
 forgotPasswordLink.addEventListener('click', function (event) {

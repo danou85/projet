@@ -1,35 +1,29 @@
-// Declaration des variable dom 
-
+// Déclaration des variables DOM
 const modal = document.getElementById("myModal");
 const addPhotoModal = document.getElementById("addPhotoModal");
 const addPhotoBtn = document.getElementById("addPhotoBtn");
-const closeAddPhotoBtn = document.querySelector(".modal-content.projet-modal-content .close");
+const closeMainModalBtn = document.querySelector("#myModal .close");  // Utilisation du sélecteur approprié
 const modifierSpan = document.querySelector(".modifier");
 const addPhotoForm = document.querySelector("#addPhotoModal form");
 const photoPreview = document.getElementById("photoPreview");
 let works = [];
 
-
-// ouverture et fermeture modal 
-
 // Fonction pour ouvrir la modal
 function ouvrirModal() {
     // Ouvrir la modal
-    const modal = document.getElementById("myModal");
     modal.style.display = "block";
 }
 
 // Gestionnaire d'événement pour le clic sur le bouton "Modifier"
 document.getElementById("modifiertest").addEventListener("click", function() {
     console.log("Clic sur l'élément modifiertest");
+    afficherProjetsDansModal();  // Ajoutez cet appel pour afficher les projets dans la modal
     ouvrirModal();
 });
 
-
-
 // Fonction pour afficher les projets dans la modal
 function afficherProjetsDansModal() {
-    const apiUrl = "http://localhost:5678/api/works"; // URL de l' API 
+    const apiUrl = "http://localhost:5678/api/works"; // URL de l'API
     const worksContainer = document.getElementById("worksContainer");
 
     // Utilisation de fetch pour récupérer les projets depuis l'API
@@ -84,21 +78,19 @@ function deleteProject(projectId) {
             Authorization: `Bearer ${localStorage.token}`,
         },
     })
-    .then(response => {
-        if (response.status === 204) {
-            console.log("Succès : Le projet a été supprimé.");
-            // Vous pouvez ajouter ici la logique pour mettre à jour l'affichage des projets dans la modal
-            afficherProjetsDansModal();  // Mettez à jour l'affichage après la suppression
-        } else {
-            console.error("Erreur : Échec de la suppression du projet.");
-        }
-    })
-    .catch(error => {
-        console.error("Erreur :", error);
-    });
+        .then(response => {
+            if (response.status === 204) {
+                console.log("Succès : Le projet a été supprimé.");
+                // Vous pouvez ajouter ici la logique pour mettre à jour l'affichage des projets dans la modal
+                afficherProjetsDansModal();  // Mettez à jour l'affichage après la suppression
+            } else {
+                console.error("Erreur : Échec de la suppression du projet.");
+            }
+        })
+        .catch(error => {
+            console.error("Erreur :", error);
+        });
 }
-
-
 
 // Fonction pour afficher l'image sélectionnée par l'utilisateur
 function afficherImage() {
@@ -115,7 +107,7 @@ function afficherImage() {
         reader.onload = function (e) {
             // Mettre à jour la source de l'aperçu de l'image avec les données du fichier
             imagePreview.src = e.target.result;
-            
+
             // Afficher l'aperçu de l'image
             imagePreview.style.display = 'block';
         };
@@ -125,10 +117,8 @@ function afficherImage() {
     }
 }
 
-
 // Fonction pour fermer la modal d'ajout de photo
 function closeAddPhotoModal() {
-    const addPhotoModal = document.getElementById("addPhotoModal");
     addPhotoModal.style.display = "none";
 }
 
@@ -182,33 +172,34 @@ function validatePhoto() {
             Authorization: `Bearer ${authToken}`,
         },
     })
-    .then(response => {
-        // Vérifier si la requête a réussi
-        if (response.ok) {
-            console.log("Photo ajoutée avec succès.");
-            // Fermer la modal après avoir ajouté la photo
-            closeAddPhotoModal();
-        } else {
-            // Afficher une erreur en cas d'échec de la requête
-            console.error("Erreur lors de l'ajout de la photo. Statut de la réponse :", response.status);
-        }
-    })
-    .catch(error => {
-        // Afficher une erreur en cas d'échec de la requête POST
-        console.error("Erreur lors de la requête POST :", error);
-    });
+        .then(response => {
+            // Vérifier si la requête a réussi
+            if (response.ok) {
+                console.log("Photo ajoutée avec succès.");
+                // Fermer la modal après avoir ajouté la photo
+                closeAddPhotoModal();
+            } else {
+                // Afficher une erreur en cas d'échec de la requête
+                console.error("Erreur lors de l'ajout de la photo. Statut de la réponse :", response.status);
+            }
+        })
+        .catch(error => {
+            // Afficher une erreur en cas d'échec de la requête POST
+            console.error("Erreur lors de la requête POST :", error);
+        });
 }
 
+// Fonction pour fermer la modal
+function fermerModal() {
+    modal.style.display = "none";
+}
+
+// Gestionnaire d'événement pour le bouton de retour dans la modal d'ajout de photo
+document.querySelector("#addPhotoModal .backButton").addEventListener("click", goBack);
 
 
-
-
-
-
-
-
-
-
+// Gestionnaire d'événement pour le clic sur la croix dans la modal d'ajout de photo
+closeMainModalBtn.addEventListener("click", fermerModal);  // Utilisation du bouton correct
 
 // Appeler la fonction au chargement de la page si nécessaire
 document.addEventListener("DOMContentLoaded", function() {
@@ -216,50 +207,16 @@ document.addEventListener("DOMContentLoaded", function() {
     // afficherProjetsDansModal();
 });
 
-// Gestionnaire d'événement pour le clic sur le bouton "Modifier"
-document.getElementById("modifiertest").addEventListener("click", function() {
-    console.log("Clic sur l'élément modifiertest");
-    afficherProjetsDansModal();
-});
-
-
-
-
-// Fonction pour fermer la modal
-function fermerModal() {
-    const modal = document.getElementById("myModal");
-    modal.style.display = "none";
-}
-
-// Gestionnaire d'événement pour le clic sur la croix
-document.querySelector(".modal-content .close").addEventListener("click", fermerModal);
-
-
-
-
-// ouverture de la deuxieme modal au click du bouton 
-
+// Gestionnaire d'événement pour le clic sur le bouton "Ajouter une photo"
+addPhotoBtn.addEventListener("click", ouvrirAddPhotoModal);
 
 // Fonction pour ouvrir la modal d'ajout de photo
 function ouvrirAddPhotoModal() {
-    const addPhotoModal = document.getElementById("addPhotoModal");
     addPhotoModal.style.display = "block";
 }
-
-// Fonction pour fermer la modal d'ajout de photo
-function fermerAddPhotoModal() {
-    const addPhotoModal = document.getElementById("addPhotoModal");
-    addPhotoModal.style.display = "none";
-}
-
-// Gestionnaire d'événement pour le clic sur le bouton "Ajouter une photo"
-document.getElementById("addPhotoBtn").addEventListener("click", ouvrirAddPhotoModal);
-
-
 
 // Fonction pour revenir en arrière dans l'application
 function goBack() {
     // Fermer la modal d'ajout de photo
-    fermerAddPhotoModal();
+    closeAddPhotoModal();
 }
-

@@ -64,7 +64,7 @@
 			<div id="worksContainer"></div>
 			<div class="séparation1"></div>
 			<button id="addPhotoBtn">Ajouter une photo</button>
-			<span class="close">&times;</span>
+			<span class="close" id="closeMainModalBtn">&times;</span>
 		</div>
 	</div>
      
@@ -75,7 +75,8 @@
     <!-- Modal content -->
     <div class="modal-content projet-modal-content">
 
-        <button class="backButton" onclick="goBack()"><i class="fas fa-arrow-left"></i></button>
+        <button class="backButton"><i class="fas fa-arrow-left"></i></button>
+		
 
         <h3>Ajout photo</h3>
 
@@ -84,9 +85,9 @@
 			<i class="fa-regular fa-image custom-icon"></i><br>
 			<!-- Ajoutez le bouton personnalisé et masquez l'élément input par défaut -->
 			<label for="imageInput" class="custom-file-upload">+ Ajouter une photo</label>
-            <input type="file" id="imageInput" accept="image/*" style="display:none;" onchange="afficherImage()"><br>
+            <input type="file" id="imageInput" accept="image/*"><br>
             <p>jpg, png : 4mo max</p>
-            <img id="photoPreview" style="display: none;">
+            <img id="photoPreview">
 
 		</div>
 		
@@ -118,9 +119,9 @@
 		<div class="séparation"></div>
 
 		<!-- Ajoutez le bouton "Valider" ici -->
-        <button class="validateButton" onclick="validatePhoto()">Valider</button>
+        <button class="validateButton">Valider</button>
 
-        <span class="close" onclick="closeAddPhotoModal()">&times;</span>
+        <span class="close" >&times;</span>
     </div>
 </div>
 

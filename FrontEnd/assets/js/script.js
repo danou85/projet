@@ -169,3 +169,7 @@ function displayCategories(categories) {
     boutonDeconnexion.style.display = 'none';
   });
 });
+
+
+
+

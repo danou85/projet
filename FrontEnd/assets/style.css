@@ -133,6 +133,7 @@ li:hover {
 
 .gallery img {
   width: 100%;
+  height: 100%;
 }
 #contact {
   width: 50%;
@@ -477,3 +478,13 @@ border: 1px solid #B3B3B3;
   text-align: center;
   padding: 10px;
 }
+
+
+#photoPreview{
+  display: none;
+}
+
+img#photoPreview {
+  height: 170px;
+}
+

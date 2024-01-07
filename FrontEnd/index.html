@@ -56,77 +56,56 @@
 		</article>
 	</section>
 
-
-    <div class="modal" id="myModal">
-
-		<div class="modal-content projet-modal-content">
-			<h3>Galerie photos</h3>
-			<div id="worksContainer"></div>
-			<div class="séparation1"></div>
-			<button id="addPhotoBtn">Ajouter une photo</button>
-			<span class="close" id="closeMainModalBtn">&times;</span>
-		</div>
-	</div>
-     
-
-    <!----------------------------------test modal ajout photo---------------------------------------------------->
-<!-- New modal for adding a photo -->
-<div class="modal" id="addPhotoModal">
-    <!-- Modal content -->
+<!-- Modal principale -->
+<div class="modal" id="myModal">
     <div class="modal-content projet-modal-content">
+        <h3>Galerie photos</h3>
+        <div id="worksContainer"></div>
+        <div class="séparation1"></div>
+        <button id="addPhotoBtn">Ajouter une photo</button>
+        <span class="close" id="closeMainModalBtn">&times;</span>
+    </div>
+</div>
 
+<!-- Modal d'ajout de photo -->
+<!-- Modal d'ajout de photo -->
+<div class="modal" id="addPhotoModal">
+    <div class="modal-content projet-modal-content">
         <button class="backButton"><i class="fas fa-arrow-left"></i></button>
-		
-
         <h3>Ajout photo</h3>
 
-		<div class="imageDisplay">
-			
-			<i class="fa-regular fa-image custom-icon"></i><br>
-			<!-- Ajoutez le bouton personnalisé et masquez l'élément input par défaut -->
-			<label for="imageInput" class="custom-file-upload">+ Ajouter une photo</label>
+        <div class="imageDisplay">
+            <i class="fa-regular fa-image custom-icon"></i><br>
+            <!-- Ajoutez le bouton personnalisé et masquez l'élément input par défaut -->
+            <label for="imageInput" class="custom-file-upload">+ Ajouter une photo</label>
             <input type="file" id="imageInput" accept="image/*"><br>
-            <p>jpg, png : 4mo max</p>
+            <p id="imageSizeMessage">jpg, png : 4mo max</p>
             <img id="photoPreview">
+        </div>
 
-		</div>
-		
-		<label for="titleInput">Titre :</label>
-		<input type="text" id="titleInput" placeholder="">
+        <label for="titleInput">Titre :</label>
+        <input type="text" id="titleInput" placeholder="">
 
-<!-- Ajoutez la liste déroulante pour les catégories -->
-<label for="categorySelect">Catégorie :</label>
-<select id="categorySelect">
-    <option value="" 
-		disabled selected hidden>
-	</option>
+        <!-- Ajoutez la liste déroulante pour les catégories -->
+        <label for="categorySelect">Catégorie :</label>
+        <select id="categorySelect">
+            <option value="" disabled selected hidden></option>
+            <option value="1">Objets</option>
+            <option value="2">Appartements</option>
+            <option value="3">Hôtels & restaurants</option>
+            <!-- Ajoutez d'autres options de catégorie selon vos besoins -->
+        </select><br>
+        <div class="séparation"></div>
 
-    <option value="1">
-		Objets
-	</option>
-
-    <option value="2">
-		Appartements
-	</option>
-
-    <option value="3">
-		Hôtels & restaurants
-	</option>
-
-    <!-- Ajoutez d'autres options de catégorie selon vos besoins -->
-</select><br>
-
-		<div class="séparation"></div>
-
-		<!-- Ajoutez le bouton "Valider" ici -->
-        <button class="validateButton">Valider</button>
+        <!-- Ajoutez le bouton "Valider" ici avec un ID -->
+        <button id="validatePhotoBtn" class="validateButton">Valider</button>
 
         <span class="close" >&times;</span>
     </div>
 </div>
 
-    
-	<!-- ---------------------------------------------------------------------------------- -->
+	</div>
+	</div>
 	
 	<section id="portfolio">
 		<h2>Mes Projets

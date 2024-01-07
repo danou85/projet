@@ -16,7 +16,6 @@ function ouvrirModal() {
 
 // Gestionnaire d'événement pour le clic sur le bouton "Modifier"
 document.getElementById("modifiertest").addEventListener("click", function() {
-    console.log("Clic sur l'élément modifiertest");
     afficherProjetsDansModal();  // Ajoutez cet appel pour afficher les projets dans la modal
     ouvrirModal();
 });
@@ -54,7 +53,10 @@ function afficherProjetsDansModal() {
 
 // Fonction pour créer un élément de projet dans le DOM
 function createProjectElement(project) {
+    // Créer un nouvel élément de type div
     const projectElement = document.createElement("div");
+
+    // Définir le contenu HTML de l'élément avec une structure spécifique
     projectElement.innerHTML = `
         <div style="display: flex; justify-content: flex-end;">
             <img src="${project.imageUrl}" alt="${project.title}" style="width: 78.12px; height: 104.08px;">
@@ -64,39 +66,50 @@ function createProjectElement(project) {
         </div>
     `;
 
+    // Ajouter un attribut de données (dataset) pour stocker l'ID du projet
     projectElement.dataset.id = project.id;
+
+    // Ajouter un gestionnaire d'événement au bouton de suppression pour appeler la fonction deleteProject
     projectElement.querySelector(".delete-icon").addEventListener("click", () => deleteProject(project.id));
 
+    // Retourner l'élément de projet nouvellement créé
     return projectElement;
 }
 
+
 // Fonction pour supprimer un projet
 function deleteProject(projectId) {
+    // Effectuer une requête DELETE à l'API pour supprimer le projet spécifié
     fetch(`http://localhost:5678/api/works/${projectId}`, {
         method: "DELETE",
         headers: {
-            Authorization: `Bearer ${localStorage.token}`,
+            Authorization: `Bearer ${localStorage.token}`, // Ajouter le jeton d'authentification
         },
     })
         .then(response => {
+            // Vérifier le statut de la réponse
             if (response.status === 204) {
                 console.log("Succès : Le projet a été supprimé.");
-                // Vous pouvez ajouter ici la logique pour mettre à jour l'affichage des projets dans la modal
-                afficherProjetsDansModal();  // Mettez à jour l'affichage après la suppression
+                // Ajouter ici la logique pour mettre à jour l'affichage des projets dans la modal
+                afficherProjetsDansModal();  // Mettre à jour l'affichage après la suppression
             } else {
                 console.error("Erreur : Échec de la suppression du projet.");
             }
         })
         .catch(error => {
+            // Gérer les erreurs lors de l'envoi de la requête
             console.error("Erreur :", error);
         });
 }
 
+
 // Fonction pour afficher l'image sélectionnée par l'utilisateur
 function afficherImage() {
-    // Sélectionner l'élément d'entrée de fichier et l'aperçu de l'image
+    // Sélectionner l'élément d'entrée de fichier, l'aperçu de l'image et les éléments supplémentaires à masquer
     const input = document.getElementById('imageInput');
     const imagePreview = document.getElementById('photoPreview');
+    const imageSizeMessage = document.getElementById('imageSizeMessage');
+    const customFileUploadLabel = document.querySelector('.custom-file-upload');
 
     // Vérifier si un fichier a été sélectionné
     if (input.files && input.files[0]) {
@@ -110,6 +123,10 @@ function afficherImage() {
 
             // Afficher l'aperçu de l'image
             imagePreview.style.display = 'block';
+
+            // Masquer les éléments supplémentaires lorsque l'image est affichée
+            imageSizeMessage.style.display = 'none';
+            customFileUploadLabel.style.display = 'none';
         };
 
         // Lire le contenu du fichier sous forme d'URL data: URL
@@ -117,10 +134,8 @@ function afficherImage() {
     }
 }
 
-// Fonction pour fermer la modal d'ajout de photo
-function closeAddPhotoModal() {
-    addPhotoModal.style.display = "none";
-}
+
+
 
 // Fonction pour valider et envoyer les données du formulaire de téléchargement d'une photo à l'API
 function validatePhoto() {
@@ -128,6 +143,8 @@ function validatePhoto() {
     const titleInput = document.getElementById("titleInput");
     const categorySelect = document.getElementById("categorySelect");
     const fileInput = document.getElementById("imageInput");
+ 
+    
 
     // Vérifier si tous les champs nécessaires sont définis et non vides
     if (!titleInput || !categorySelect || !fileInput || fileInput.files.length === 0) {
@@ -139,6 +156,8 @@ function validatePhoto() {
     const title = titleInput.value;
     const category = categorySelect.value;
     const photoFile = fileInput.files[0];
+    
+
 
     // Définir les types d'images autorisés
     const allowedImageTypes = ["image/jpeg", "image/png", "image/gif"];
@@ -188,6 +207,9 @@ function validatePhoto() {
             console.error("Erreur lors de la requête POST :", error);
         });
 }
+// Gestionnaire d'événement pour le bouton "Valider" dans la modal d'ajout de photo
+document.getElementById("validatePhotoBtn").addEventListener("click", validatePhoto);
+
 
 // Fonction pour fermer la modal
 function fermerModal() {
@@ -215,8 +237,57 @@ function ouvrirAddPhotoModal() {
     addPhotoModal.style.display = "block";
 }
 
+
+
 // Fonction pour revenir en arrière dans l'application
 function goBack() {
     // Fermer la modal d'ajout de photo
     closeAddPhotoModal();
+}
+const input = document.getElementById('imageInput');
+input.addEventListener('change', afficherImage);
+
+
+
+
+
+// Fonction pour fermer les deux modales la modal add et la principal
+function closeAddPhotoModal() {
+    const modal = document.getElementById("myModal");
+    const addPhotoModal = document.getElementById("addPhotoModal");
+  
+    // Masquer les deux modales
+    modal.style.display = "none";
+    addPhotoModal.style.display = "none";
+  }
+
+
+
+  // Sélectionnez tous les éléments <span class="close">
+var boutonsFermeture = document.querySelectorAll('.close');
+
+// Ajoutez un gestionnaire d'événements à chaque bouton de fermeture
+boutonsFermeture.forEach(function(bouton) {
+    bouton.addEventListener('click', function() {
+        // Trouvez la modal parente en remontant dans la hiérarchie des éléments
+        var modal = bouton.closest('.modal');
+
+        // Fermez la modal en ajustant son style
+        if (modal) {
+            modal.style.display = 'none';
+        }
+    });
+});
+// Gestionnaire d'événement pour le clic sur la croix dans la modal d'ajout de photo
+document.querySelector("#addPhotoModal .close").addEventListener("click", function() {
+    // Fermer la modal d'ajout de photo
+    closeAddPhotoModal();
+    // Fermer la modal principale
+    fermerModal();
+});
+
+// Fonction pour revenir en arrière dans l'application
+function goBack() {
+    // Fermer la modal d'ajout de photo
+    addPhotoModal.style.display = "none";
 }

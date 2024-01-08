@@ -1,7 +1,7 @@
 // Sélectionnez le formulaire et les champs d'entrée
-const form = document.querySelector('form');
-const emailInput = document.getElementById('email');
-const passwordInput = document.getElementById('password');
+const form = document.querySelector('form'); // Sélectionne le formulaire du document
+const emailInput = document.getElementById('email'); // Sélectionne le champ d'entrée pour l'email
+const passwordInput = document.getElementById('password'); // Sélectionne le champ d'entrée pour le mot de passe
 
 // Ajoutez un écouteur d'événements pour la soumission du formulaire
 form.addEventListener('submit', function (event) {
@@ -13,13 +13,13 @@ form.addEventListener('submit', function (event) {
 
   // Vérifiez si les champs sont vides
   if (!email || !password) {
-    alert('Veuillez remplir tous les champs.');
+    alert('Veuillez remplir tous les champs.'); // Alerte l'utilisateur si les champs sont vides
     return;
   }
 
   // Validation d'email simple (vous pouvez utiliser une expression régulière plus avancée)
   if (!isValidEmail(email)) {
-    alert('Veuillez saisir une adresse e-mail valide.');
+    alert('Veuillez saisir une adresse e-mail valide.'); // Alerte l'utilisateur si l'email n'est pas valide
     return;
   }
 
@@ -55,17 +55,16 @@ form.addEventListener('submit', function (event) {
       alert('Une erreur est survenue lors de l\'authentification.');
     });
 });
+
 // Fonction de validation d'email
 function isValidEmail(email) {
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Expression régulière simple pour valider un email
   return emailRegex.test(email);
 }
+
 // Sélectionnez le lien "Mot de passe oublié" et ajoutez un écouteur d'événements
-const forgotPasswordLink = document.querySelector('.mp-forget');
+const forgotPasswordLink = document.querySelector('.mp-forget'); // Sélectionne le lien "Mot de passe oublié"
 forgotPasswordLink.addEventListener('click', function (event) {
   event.preventDefault();
-  alert('Lien de réinitialisation du mot de passe envoyé par e-mail.');
+  alert('Lien de réinitialisation du mot de passe envoyé par e-mail.'); // Alerte l'utilisateur sur le clic du lien
 });
-
-
-

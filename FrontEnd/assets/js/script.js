@@ -9,27 +9,33 @@ document.addEventListener('DOMContentLoaded', () => {
   const modifier = document.getElementById('modifiertest');
   const modeEdition = document.getElementById('edition');
 
-  // Fonction pour récupérer et afficher les projets depuis une API
-  function fetchDataFromAPI(categoryId) {
-    const apiUrl = 'http://localhost:5678/api/works';
-    fetch(apiUrl)
+ // Fonction pour récupérer et afficher les projets depuis une API
+function fetchDataFromAPI(categoryId) {
+  // Définir l'URL de l'API des projets
+  const apiUrl = 'http://localhost:5678/api/works';
+
+  // Utiliser fetch pour effectuer une requête GET à l'API
+  fetch(apiUrl)
       .then(response => {
-        if (!response.ok) throw new Error('La requête a échoué');
-        return response.json();
+          // Vérifier si la réponse de la requête est OK
+          if (!response.ok) throw new Error('La requête a échoué');
+          // Convertir la réponse en JSON
+          return response.json();
       })
       .then(data => {
-        // Filtrer les données en fonction de la catégorie sélectionnée
-        const filteredData = categoryId
-          ? data.filter(item => item.categoryId === categoryId)
-          : data;
+          // Filtrer les données en fonction de la catégorie sélectionnée
+          const filteredData = categoryId
+              ? data.filter(item => item.categoryId === categoryId)
+              : data;
 
-        // Appeler la fonction pour afficher les projets
-        displayProjects(filteredData);
+          // Appeler la fonction pour afficher les projets avec les données filtrées
+          displayProjects(filteredData);
       })
       .catch(error => {
-        console.error('Erreur lors de la récupération des données :', error);
+          // Gérer les erreurs, afficher un message dans la console
+          console.error('Erreur lors de la récupération des données :', error);
       });
-  }
+}
 
  // Fonction pour afficher les projets dans la galerie
 function displayProjects(data) {

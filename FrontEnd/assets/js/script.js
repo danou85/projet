@@ -1,6 +1,6 @@
 // Attendre que le DOM soit chargé avant d'exécuter le code
 document.addEventListener('DOMContentLoaded', () => {
-  
+
   // Sélectionner les éléments du DOM nécessaires
   const categoryList = document.querySelector('.category-list');
   const gallery = document.querySelector('.gallery');
@@ -167,15 +167,18 @@ function displayCategories(categories) {
   boutonDeconnexion.addEventListener('click', () => {
     // Supprimer le jeton d'authentification lors de la déconnexion
     localStorage.removeItem('token');
+
     
     // Rétablir l'affichage par défaut après la déconnexion
     categoryList.style.display = '';
     login.style.display = '';
     modifier.style.display = 'none';
+    modeEdition.style.display ='none';
     boutonDeconnexion.style.display = 'none';
+
+    console.log('categoryList.style.display:', categoryList.style.display);
+    console.log('login.style.display:', login.style.display);
+    console.log('modifier.style.display:', modifier.style.display);
+    console.log('modeEdition.style.display:', modeEdition.style.display);
   });
 });
-
-
-
-

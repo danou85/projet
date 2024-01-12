@@ -98,52 +98,77 @@ function afficherImage() {
     const imageSizeMessage = document.getElementById('imageSizeMessage');
     const customFileUploadLabel = document.querySelector('.custom-file-upload');
 
-    if (input.files && input.files[0]) {
-        const reader = new FileReader();
+    // Vérifie si des fichiers ont été sélectionnés
+if (input.files && input.files[0]) {
+    // Crée un nouvel objet FileReader
+    const reader = new FileReader();
 
-        reader.onload = function (e) {
-            imagePreview.src = e.target.result;
-            imagePreview.style.display = 'block';
-            imageSizeMessage.style.display = 'none';
-            customFileUploadLabel.style.display = 'none';
-        };
+    // Définit une fonction à exécuter lorsque la lecture du fichier est terminée
+    reader.onload = function (e) {
+        // Met à jour la source de l'aperçu de l'image avec les données du fichier
+        imagePreview.src = e.target.result;
 
-        reader.readAsDataURL(input.files[0]);
-    }
+        // Affiche l'aperçu de l'image
+        imagePreview.style.display = 'block';
+
+        // Masque le message de taille de l'image (s'il est affiché)
+        imageSizeMessage.style.display = 'none';
+
+        // Masque le libellé personnalisé du téléchargement de fichier
+        customFileUploadLabel.style.display = 'none';
+    };
+
+    // Lit le contenu du fichier sous forme d'URL de données
+    reader.readAsDataURL(input.files[0]);
 }
 
+    }
+
 // Fonction pour valider et envoyer les données du formulaire de téléchargement d'une photo à l'API
+// Fonction de validation du formulaire d'ajout de photo, recueille les données du formulaire,
+// vérifie si les champs requis sont définis et non vides, valide le type de fichier image,
+// puis envoie une requête POST à l'API avec les données du formulaire.
 function validatePhoto() {
+    // Récupère les éléments du formulaire
     const titleInput = document.getElementById("titleInput");
     const categorySelect = document.getElementById("categorySelect");
     const fileInput = document.getElementById("imageInput");
 
+    // Vérifie si les éléments nécessaires sont définis et non vides
     if (!titleInput || !categorySelect || !fileInput || fileInput.files.length === 0) {
         console.log("Échec de la validation : un champ du formulaire est indéfini ou vide.");
         return;
     }
 
+    // Récupère les valeurs des champs du formulaire
     const title = titleInput.value;
     const category = categorySelect.value;
     const photoFile = fileInput.files[0];
 
+    // Définit les types d'images autorisés
     const allowedImageTypes = ["image/jpeg", "image/png", "image/gif"];
 
+    // Vérifie si le type de fichier est une image valide
     if (!allowedImageTypes.includes(photoFile.type)) {
         console.log("Échec de la validation : le fichier n'est pas une image valide.");
         return;
     }
 
+    // Crée un objet FormData et y ajoute les données du formulaire
     const formData = new FormData();
     formData.append("title", title);
     formData.append("category", category);
     formData.append("image", photoFile);
 
+    // Récupère le jeton d'authentification stocké localement
     const authToken = localStorage.getItem("token");
+
+    // Définit l'URL de l'API
     const apiUrl = "http://localhost:5678/api/works";
 
     console.log("Envoi de la requête à l'API...");
 
+    // Envoie une requête POST à l'API avec les données du formulaire
     fetch(apiUrl, {
         method: "POST",
         body: formData,
@@ -151,17 +176,18 @@ function validatePhoto() {
             Authorization: `Bearer ${authToken}`,
         },
     })
-        .then(response => {
-            if (response.ok) {
-                console.log("Photo ajoutée avec succès.");
-                closeAddPhotoModal(); // Ferme la modal d'ajout de photo après avoir ajouté la photo
-            } else {
-                console.error("Erreur lors de l'ajout de la photo. Statut de la réponse :", response.status);
-            }
-        })
-        .catch(error => {
-            console.error("Erreur lors de la requête POST :", error);
-        });
+    .then(response => {
+        // Vérifie si la requête a réussi et ferme la modal en cas de succès
+        if (response.ok) {
+            console.log("Photo ajoutée avec succès.");
+            closeAddPhotoModal(); // Ferme la modal d'ajout de photo après avoir ajouté la photo
+        } else {
+            console.error("Erreur lors de l'ajout de la photo. Statut de la réponse :", response.status);
+        }
+    })
+    .catch(error => {
+        console.error("Erreur lors de la requête POST :", error);
+    });
 }
 
 // Gestionnaire d'événement pour le bouton "Valider" dans la modal d'ajout de photo

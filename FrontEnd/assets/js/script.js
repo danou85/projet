@@ -176,9 +176,6 @@ function displayCategories(categories) {
     modeEdition.style.display ='none';
     boutonDeconnexion.style.display = 'none';
 
-    console.log('categoryList.style.display:', categoryList.style.display);
-    console.log('login.style.display:', login.style.display);
-    console.log('modifier.style.display:', modifier.style.display);
-    console.log('modeEdition.style.display:', modeEdition.style.display);
+  
   });
 });

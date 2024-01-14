@@ -138,6 +138,7 @@ li:hover {
 #contact {
   width: 50%;
   margin: auto;
+  padding: 100px;
 }
 #contact > * {
   text-align: center;

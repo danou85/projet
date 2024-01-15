@@ -1,6 +1,5 @@
 // Attendre que le DOM soit chargé avant d'exécuter le code
 document.addEventListener('DOMContentLoaded', () => {
-
   // Sélectionner les éléments du DOM nécessaires
   const categoryList = document.querySelector('.category-list');
   const gallery = document.querySelector('.gallery');
@@ -8,14 +7,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const login = document.getElementById('login');
   const modifier = document.getElementById('modifiertest');
   const modeEdition = document.getElementById('edition');
-
-
  // Fonction pour récupérer et afficher les projets depuis une API
-function works(categoryId) {
-  
+function fetchDataFromAPI(categoryId) {
   // Définir l'URL de l'API des projets
   const apiUrl = 'http://localhost:5678/api/works';
-
   // Utiliser fetch pour effectuer une requête GET à l'API
   fetch(apiUrl)
       .then(response => {
@@ -29,7 +24,6 @@ function works(categoryId) {
           const filteredData = categoryId
               ? data.filter(item => item.categoryId === categoryId)
               : data;
-
           // Appeler la fonction pour afficher les projets avec les données filtrées
           displayProjects(filteredData);
       })
@@ -38,7 +32,6 @@ function works(categoryId) {
           console.error('Erreur lors de la récupération des données :', error);
       });
 }
-
  // Fonction pour afficher les projets dans la galerie
 function displayProjects(data) {
     // Mettre à jour le contenu HTML de la galerie en utilisant les données fournies
@@ -55,12 +48,10 @@ function displayProjects(data) {
       // Joindre tous les éléments visuels en une seule chaîne de caractères
       .join('');
 }
-
 // Fonction pour récupérer les catégories depuis une API
 function fetchCategoriesFromAPI() {
     // Définir l'URL de l'API des catégories
     const apiUrl = 'http://localhost:5678/api/categories';
-
     // Effectuer une requête fetch pour obtenir les catégories depuis l'API
     fetch(apiUrl)
       .then(response => {
@@ -75,7 +66,6 @@ function fetchCategoriesFromAPI() {
         const tousCategoryItem = document.createElement('div');
         tousCategoryItem.classList.add('category-item', 'selected');
         tousCategoryItem.textContent = 'Tous';
-
         // Ajouter un écouteur d'événements pour afficher tous les projets si "Tous" est sélectionné
         tousCategoryItem.addEventListener('click', () => {
           // Retirer la classe 'selected' de tous les éléments de catégorie
@@ -83,20 +73,15 @@ function fetchCategoriesFromAPI() {
           categoryItems.forEach(item => {
             item.classList.remove('selected');
           });
-
           // Ajouter la classe 'selected' à l'élément "Tous"
           tousCategoryItem.classList.add('selected');
-
           // Appeler la fonction fetchDataFromAPI pour afficher tous les projets
-          works();
+          fetchDataFromAPI();
         });
-
         // Ajouter l'élément "Tous" à la liste des catégories dans l'interface utilisateur
         categoryList.appendChild(tousCategoryItem);
-
         // Afficher les autres catégories en utilisant la fonction displayCategories
         displayCategories(data);
-
         // Sélectionner la catégorie "Tous" par défaut en simulant un clic sur l'élément "Tous"
         tousCategoryItem.click();
       })
@@ -105,21 +90,16 @@ function fetchCategoriesFromAPI() {
         console.error('Erreur lors de la récupération des catégories :', error);
       });
   }
-
-
   // Fonction pour afficher les catégories dans l'interface utilisateur
 function displayCategories(categories) {
     // Parcourir toutes les catégories fournies en paramètre
     categories.forEach(category => {
         // Créer un nouvel élément div pour représenter une catégorie
         const categoryItem = document.createElement('div');
-
         // Ajouter la classe 'category-item' à l'élément div créé
         categoryItem.classList.add('category-item');
-
         // Définir le texte de l'élément div avec le nom de la catégorie
         categoryItem.textContent = category.name;
-
         // Ajouter un écouteur d'événements pour le clic sur la catégorie
         categoryItem.addEventListener('click', () => {
             // Retirer la classe 'selected' de tous les éléments de catégorie
@@ -127,28 +107,21 @@ function displayCategories(categories) {
             categoryItems.forEach(item => {
                 item.classList.remove('selected');
             });
-
             // Ajouter la classe 'selected' à l'élément de catégorie actuel
             categoryItem.classList.add('selected');
-
             // Récupérer l'identifiant de la catégorie sélectionnée
             const categoryId = category.id;
-
             // Appeler la fonction fetchDataFromAPI avec l'identifiant de la catégorie sélectionnée
-            works(categoryId);
+            fetchDataFromAPI(categoryId);
         });
-
         // Ajouter l'élément de catégorie à la liste des catégories dans l'interface utilisateur
         categoryList.appendChild(categoryItem);
     });
 }
-
   // Exécuter ces fonctions lorsque le contenu DOM est chargé
   fetchCategoriesFromAPI();
-
   // Vérifier si l'utilisateur est connecté
   const estConnecte = () => localStorage.getItem('token') !== null;
-
   if (estConnecte()) {
     // Masquer les éléments liés à la connexion et afficher ceux liés à la déconnexion
     categoryList.style.display = 'none';
@@ -164,12 +137,10 @@ function displayCategories(categories) {
     modeEdition.style.display = 'none';
     boutonDeconnexion.style.display = 'none';
   }
-
   // Ajouter un gestionnaire d'événements au bouton de déconnexion
   boutonDeconnexion.addEventListener('click', () => {
     // Supprimer le jeton d'authentification lors de la déconnexion
     localStorage.removeItem('token');
-
     
     // Rétablir l'affichage par défaut après la déconnexion
     categoryList.style.display = '';
@@ -178,8 +149,13 @@ function displayCategories(categories) {
     modeEdition.style.display ='none';
     boutonDeconnexion.style.display = 'none';
 
-  
+
   });
 });
 
-export { works };
+export function displayProjects(){
+  console.log("fonction exporte")
+}
+export function createProjectElement(){
+  console.log("jte fume ")
+}

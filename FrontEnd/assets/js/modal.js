@@ -1,15 +1,14 @@
-    
- import { works } from "./script.js";
+import { displayProjects } from "./script.js";
+
 
 // Déclaration des variables DOM
-const modal = document.getElementById("myModal"); // Modal principale
-const addPhotoModal = document.getElementById("addPhotoModal"); // Modal d'ajout de photo
-const addPhotoBtn = document.getElementById("addPhotoBtn"); // Bouton pour ouvrir la modal d'ajout de photo
-const closeMainModalBtn = document.querySelector("#myModal .close"); // Bouton de fermeture de la modal principale
-const modifierSpan = document.querySelector(".modifier"); // Élément "modifier" dans le DOM
-const addPhotoForm = document.querySelector("#addPhotoModal form"); // Formulaire dans la modal d'ajout de photo
-const photoPreview = document.getElementById("photoPreview"); // Aperçu de la photo dans la modal d'ajout de photo
-
+const modal = document.getElementById("myModal");
+const addPhotoModal = document.getElementById("addPhotoModal");
+const addPhotoBtn = document.getElementById("addPhotoBtn");
+const closeMainModalBtn = document.querySelector("#myModal .close");
+const modifierSpan = document.querySelector(".modifier");
+const addPhotoForm = document.querySelector("#addPhotoModal form");
+const photoPreview = document.getElementById("photoPreview");
 
 // Fonction pour ouvrir la modal
 function ouvrirModal() {
@@ -17,18 +16,14 @@ function ouvrirModal() {
 }
 
 // Gestionnaire d'événement pour le clic sur le bouton "Modifier"
-document.getElementById("modifiertest").addEventListener("click", function() {
+document.getElementById("modifiertest").addEventListener("click", function () {
     afficherProjetsDansModal(); // Appelle la fonction pour afficher les projets dans la modal
     ouvrirModal(); // Ouvre la modal après avoir affiché les projets
 });
 
 // Fonction pour afficher les projets dans la modal
-// Fonction pour afficher les projets dans la modal
 function afficherProjetsDansModal() {
-    const apiUrl = "http://localhost:5678/api/works"; // URL de l'API des projets
-    const worksContainer = document.getElementById("worksContainer"); // Conteneur des projets dans la modal
-
-    // Utilisation de fetch pour récupérer les projets depuis l'API
+    const apiUrl = "http://localhost:5678/api/works";
     fetch(apiUrl)
         .then(response => {
             if (!response.ok) {
@@ -37,22 +32,13 @@ function afficherProjetsDansModal() {
             return response.json();
         })
         .then(projects => {
-            worksContainer.innerHTML = ""; // Efface le contenu actuel de worksContainer
-
-            // Affiche chaque projet dans la modal
-            projects.forEach(project => {
-                const projectElement = createProjectElement(project);
-                worksContainer.appendChild(projectElement);
-            });
-
-            // Déplace l'appel à ouvrirModal ici, après l'ajout des projets au conteneur
+            displayProjects(projects);
             ouvrirModal(); // Ouvre la modal après avoir récupéré et affiché les projets
         })
         .catch(error => {
             console.error("Erreur lors de la récupération et de l'affichage des projets :", error);
         });
 }
-
 
 // Fonction pour supprimer un projet
 async function deleteProject(projectId) {
@@ -74,6 +60,7 @@ async function deleteProject(projectId) {
         console.error("Erreur :", error);
     }
 }
+
 
 
 // Fonction pour afficher l'image sélectionnée par l'utilisateur
@@ -170,7 +157,7 @@ async function validatePhoto() {
             console.log("Photo ajoutée avec succès.");
             afficherProjetsDansModal();
             closeAddPhotoModal(); // Ferme la modal d'ajout de photo après avoir ajouté la photo
-            location.reload()
+            
         } else {
             console.error("Erreur lors de l'ajout de la photo. Statut de la réponse :", response.status);
         }

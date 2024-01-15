@@ -9,8 +9,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const modifier = document.getElementById('modifiertest');
   const modeEdition = document.getElementById('edition');
 
+
  // Fonction pour récupérer et afficher les projets depuis une API
-function fetchDataFromAPI(categoryId) {
+function works(categoryId) {
+  
   // Définir l'URL de l'API des projets
   const apiUrl = 'http://localhost:5678/api/works';
 
@@ -86,7 +88,7 @@ function fetchCategoriesFromAPI() {
           tousCategoryItem.classList.add('selected');
 
           // Appeler la fonction fetchDataFromAPI pour afficher tous les projets
-          fetchDataFromAPI();
+          works();
         });
 
         // Ajouter l'élément "Tous" à la liste des catégories dans l'interface utilisateur
@@ -133,7 +135,7 @@ function displayCategories(categories) {
             const categoryId = category.id;
 
             // Appeler la fonction fetchDataFromAPI avec l'identifiant de la catégorie sélectionnée
-            fetchDataFromAPI(categoryId);
+            works(categoryId);
         });
 
         // Ajouter l'élément de catégorie à la liste des catégories dans l'interface utilisateur
@@ -179,3 +181,5 @@ function displayCategories(categories) {
   
   });
 });
+
+export { works };

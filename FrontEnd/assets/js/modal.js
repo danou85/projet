@@ -1,3 +1,6 @@
+    
+ import { works } from "./script.js";
+
 // Déclaration des variables DOM
 const modal = document.getElementById("myModal"); // Modal principale
 const addPhotoModal = document.getElementById("addPhotoModal"); // Modal d'ajout de photo
@@ -6,7 +9,7 @@ const closeMainModalBtn = document.querySelector("#myModal .close"); // Bouton d
 const modifierSpan = document.querySelector(".modifier"); // Élément "modifier" dans le DOM
 const addPhotoForm = document.querySelector("#addPhotoModal form"); // Formulaire dans la modal d'ajout de photo
 const photoPreview = document.getElementById("photoPreview"); // Aperçu de la photo dans la modal d'ajout de photo
-let works = []; // Tableau pour stocker les projets
+
 
 // Fonction pour ouvrir la modal
 function ouvrirModal() {
@@ -50,29 +53,6 @@ function afficherProjetsDansModal() {
         });
 }
 
-// Fonction pour créer un élément de projet dans le DOM
-function createProjectElement(project) {
-    const projectElement = document.createElement("div"); // Crée un nouvel élément div
-
-    // Définit le contenu HTML de l'élément avec une structure spécifique
-    projectElement.innerHTML = `
-        <div style="display: flex; justify-content: flex-end;">
-            <img src="${project.imageUrl}" alt="${project.title}" style="width: 78.12px; height: 104.08px;">
-            <div class="delete-icon" style="margin-left: -15px; z-index:999">
-                <i class="fas fa-trash"></i>
-            </div>
-        </div>
-    `;
-
-    projectElement.dataset.id = project.id; // Ajoute un attribut de données pour stocker l'ID du projet
-
-    // Ajoute un gestionnaire d'événement au bouton de suppression pour appeler la fonction deleteProject
-    projectElement.querySelector(".delete-icon").addEventListener("click", () => deleteProject(project.id));
-
- 
-
-    return projectElement; // Retourne l'élément de projet nouvellement créé
-}
 
 // Fonction pour supprimer un projet
 async function deleteProject(projectId) {
@@ -87,7 +67,6 @@ async function deleteProject(projectId) {
         if (response.status === 204) {
             console.log("Succès : Le projet a été supprimé.");
             afficherProjetsDansModal();
-            location.reload()
         } else {
             console.error("Erreur : Échec de la suppression du projet.");
         }
@@ -250,10 +229,7 @@ function ouvrirAddPhotoModal() {
     addPhotoModal.style.display = "block";
 }
 
-// Fonction pour revenir en arrière dans l'application
-function goBack() {
-    closeAddPhotoModal(); // Ferme la modal d'ajout de photo
-}
+
 
 // Gestionnaire d'événement pour le changement de l'entrée de fichier (sélection de l'image)
 const input = document.getElementById('imageInput');

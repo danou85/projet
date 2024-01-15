@@ -128,6 +128,7 @@ if (input.files && input.files[0]) {
 // Fonction de validation du formulaire d'ajout de photo, recueille les données du formulaire,
 // vérifie si les champs requis sont définis et non vides, valide le type de fichier image,
 // puis envoie une requête POST à l'API avec les données du formulaire.
+// Fonction pour valider et envoyer les données du formulaire de téléchargement d'une photo à l'API
 function validatePhoto() {
     // Récupère les éléments du formulaire
     const titleInput = document.getElementById("titleInput");
@@ -189,6 +190,26 @@ function validatePhoto() {
         console.error("Erreur lors de la requête POST :", error);
     });
 }
+
+// Sélectionnez le bouton "Valider"
+const validatePhotoBtn = document.getElementById("validatePhotoBtn");
+
+// Ajoutez un gestionnaire d'événements pour chaque changement dans les champs
+titleInput.addEventListener("input", checkFormValidity);
+categorySelect.addEventListener("input", checkFormValidity);
+imageInput.addEventListener("change", checkFormValidity);
+
+// Fonction pour vérifier la validité du formulaire et mettre à jour le bouton "Valider"
+function checkFormValidity() {
+    // Vérifiez si tous les champs nécessaires sont remplis
+    const isFormValid = titleInput.value.trim() !== "" && categorySelect.value !== "" && imageInput.files.length > 0;
+
+    // Mettez à jour la couleur du bouton en fonction de la validité du formulaire
+    validatePhotoBtn.style.backgroundColor = isFormValid ? "green" : ""; // Vert si le formulaire est valide, sinon pas de couleur
+
+    return isFormValid; // Renvoie la validité du formulaire
+}
+
 
 // Gestionnaire d'événement pour le bouton "Valider" dans la modal d'ajout de photo
 document.getElementById("validatePhotoBtn").addEventListener("click", validatePhoto);

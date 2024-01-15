@@ -20,6 +20,7 @@ document.getElementById("modifiertest").addEventListener("click", function() {
 });
 
 // Fonction pour afficher les projets dans la modal
+// Fonction pour afficher les projets dans la modal
 function afficherProjetsDansModal() {
     const apiUrl = "http://localhost:5678/api/works"; // URL de l'API des projets
     const worksContainer = document.getElementById("worksContainer"); // Conteneur des projets dans la modal
@@ -41,6 +42,7 @@ function afficherProjetsDansModal() {
                 worksContainer.appendChild(projectElement);
             });
 
+            // Déplace l'appel à ouvrirModal ici, après l'ajout des projets au conteneur
             ouvrirModal(); // Ouvre la modal après avoir récupéré et affiché les projets
         })
         .catch(error => {
@@ -67,29 +69,33 @@ function createProjectElement(project) {
     // Ajoute un gestionnaire d'événement au bouton de suppression pour appeler la fonction deleteProject
     projectElement.querySelector(".delete-icon").addEventListener("click", () => deleteProject(project.id));
 
+ 
+
     return projectElement; // Retourne l'élément de projet nouvellement créé
 }
 
 // Fonction pour supprimer un projet
-function deleteProject(projectId) {
-    fetch(`http://localhost:5678/api/works/${projectId}`, {
-        method: "DELETE",
-        headers: {
-            Authorization: `Bearer ${localStorage.token}`, // Ajoute le jeton d'authentification
-        },
-    })
-        .then(response => {
-            if (response.status === 204) {
-                console.log("Succès : Le projet a été supprimé.");
-                afficherProjetsDansModal(); // Met à jour l'affichage après la suppression
-            } else {
-                console.error("Erreur : Échec de la suppression du projet.");
-            }
-        })
-        .catch(error => {
-            console.error("Erreur :", error);
+async function deleteProject(projectId) {
+    try {
+        const response = await fetch(`http://localhost:5678/api/works/${projectId}`, {
+            method: "DELETE",
+            headers: {
+                Authorization: `Bearer ${localStorage.token}`,
+            },
         });
+
+        if (response.status === 204) {
+            console.log("Succès : Le projet a été supprimé.");
+            afficherProjetsDansModal();
+            location.reload()
+        } else {
+            console.error("Erreur : Échec de la suppression du projet.");
+        }
+    } catch (error) {
+        console.error("Erreur :", error);
+    }
 }
+
 
 // Fonction pour afficher l'image sélectionnée par l'utilisateur
 function afficherImage() {
@@ -129,14 +135,15 @@ if (input.files && input.files[0]) {
 // vérifie si les champs requis sont définis et non vides, valide le type de fichier image,
 // puis envoie une requête POST à l'API avec les données du formulaire.
 // Fonction pour valider et envoyer les données du formulaire de téléchargement d'une photo à l'API
-function validatePhoto() {
+// Fonction pour valider et envoyer les données du formulaire de téléchargement d'une photo à l'API
+async function validatePhoto() {
     // Récupère les éléments du formulaire
     const titleInput = document.getElementById("titleInput");
     const categorySelect = document.getElementById("categorySelect");
-    const fileInput = document.getElementById("imageInput");
+    const imageInput = document.getElementById("imageInput");
 
     // Vérifie si les éléments nécessaires sont définis et non vides
-    if (!titleInput || !categorySelect || !fileInput || fileInput.files.length === 0) {
+    if (!titleInput || !categorySelect || !imageInput || imageInput.files.length === 0) {
         console.log("Échec de la validation : un champ du formulaire est indéfini ou vide.");
         return;
     }
@@ -144,7 +151,7 @@ function validatePhoto() {
     // Récupère les valeurs des champs du formulaire
     const title = titleInput.value;
     const category = categorySelect.value;
-    const photoFile = fileInput.files[0];
+    const photoFile = imageInput.files[0];
 
     // Définit les types d'images autorisés
     const allowedImageTypes = ["image/jpeg", "image/png", "image/gif"];
@@ -169,29 +176,31 @@ function validatePhoto() {
 
     console.log("Envoi de la requête à l'API...");
 
-    // Envoie une requête POST à l'API avec les données du formulaire
-    fetch(apiUrl, {
-        method: "POST",
-        body: formData,
-        headers: {
-            Authorization: `Bearer ${authToken}`,
-        },
-    })
-    .then(response => {
-        // Vérifie si la requête a réussi et ferme la modal en cas de succès
+    try {
+        // Envoie une requête POST à l'API avec les données du formulaire
+        const response = await fetch(apiUrl, {
+            method: "POST",
+            body: formData,
+            headers: {
+                Authorization: `Bearer ${authToken}`,
+            },
+        });
+
+        // Vérifie si la requête a réussi
         if (response.ok) {
             console.log("Photo ajoutée avec succès.");
+            afficherProjetsDansModal();
             closeAddPhotoModal(); // Ferme la modal d'ajout de photo après avoir ajouté la photo
+            location.reload()
         } else {
             console.error("Erreur lors de l'ajout de la photo. Statut de la réponse :", response.status);
         }
-    })
-    .catch(error => {
+    } catch (error) {
         console.error("Erreur lors de la requête POST :", error);
-    });
+    }
 }
 
-// Sélectionnez le bouton "Valider"
+
 const validatePhotoBtn = document.getElementById("validatePhotoBtn");
 
 // Ajoutez un gestionnaire d'événements pour chaque changement dans les champs
@@ -213,6 +222,8 @@ function checkFormValidity() {
 
 // Gestionnaire d'événement pour le bouton "Valider" dans la modal d'ajout de photo
 document.getElementById("validatePhotoBtn").addEventListener("click", validatePhoto);
+
+
 
 // Fonction pour fermer la modal
 function fermerModal() {
@@ -274,9 +285,12 @@ boutonsFermeture.forEach(function(bouton) {
 document.querySelector("#addPhotoModal .close").addEventListener("click", function() {
     closeAddPhotoModal(); // Ferme la modal d'ajout de photo
     fermerModal(); // Ferme la modal principale
+    
 });
 
 // Fonction pour revenir en arrière dans l'application
 function goBack() {
     addPhotoModal.style.display = "none"; // Ferme la modal d'ajout de photo
 }
+
+
